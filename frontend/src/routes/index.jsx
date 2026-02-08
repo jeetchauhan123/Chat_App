@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "../pages/authentication/login";
-import Register from "../pages/authentication/Register";
 import Chat from "../pages/Chat";
+import Auth from "../pages/Auth";
 
 
 const router = createBrowserRouter([
@@ -10,12 +9,8 @@ const router = createBrowserRouter([
         element:<Chat />
     },
     {
-        path:"/login",
-        element: <Login />
+        path:"/auth",
+        element: <Auth />
     },
-    {
-        path: "/register",
-        element:<Register />
-    }
 ])
 export default router;
