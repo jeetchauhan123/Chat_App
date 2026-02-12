@@ -15,7 +15,7 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="h-screen p-5">
+    <section className="h-screen p-5 overflow-hidden relative">
       <img src="/chat_bg4.jpg" alt="bg_img" className="absolute object-cover top-0 left-0 -z-10" />
       <Sidebar user={user} />
     </section>
