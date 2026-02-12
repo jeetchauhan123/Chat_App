@@ -1,11 +1,31 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import users from "../data/users.json";
 
 const Auth = () => {
   const [otpPage, setOtpPage] = useState(false);
+  const [email, setEmail] = useState("");
 
-  const ButtonClick = ()=>{
-    setOtpPage(true)
+  const navigate = useNavigate();
+
+  const EmailBtnClick = () => {
+    const findUser = users.find(
+      (user) => user.name.toLowerCase() === email.toLowerCase(),
+    );
+    if (findUser) {
+      setOtpPage(true);
+    } else {
+      alert("User not found");
+    }
+  };
+
+  const OtpBtnClick = () => {
+    const foundUser = users.find(
+      (user) => user.name.toLowerCase() === email.toLowerCase(),
+    );
+    console.log(foundUser)
+    setOtpPage(false);
+    navigate("/", { state: { user: foundUser } });
   };
 
   return (
@@ -71,15 +91,15 @@ const Auth = () => {
               className="bg-gray-100 w-70 h-10 rounded-full text-center border"
             />
             <section className="w-70 flex gap-4">
-              <button 
+              <button
                 className="bg-amber-100 w-1/2 h-10 rounded-full text-lg"
-                onClick={()=>setOtpPage(false)}
+                onClick={() => setOtpPage(false)}
               >
                 Previous
               </button>
               <button
                 className="bg-amber-100 w-1/2 h-10 mb-2 rounded-full text-lg"
-                onClick={() => setOtpPage(false)}
+                onClick={() => OtpBtnClick()}
               >
                 Submit
               </button>
@@ -97,11 +117,12 @@ const Auth = () => {
                 type="email"
                 name="email"
                 id="email"
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-100 w-70 h-10 rounded-full text-center border"
               />
               <button
                 className="bg-amber-100 w-70 h-10 mb-2 rounded-full text-lg"
-                onClick={() => ButtonClick()}
+                onClick={() => EmailBtnClick()}
               >
                 Next
               </button>

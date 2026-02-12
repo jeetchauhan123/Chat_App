@@ -1,0 +1,272 @@
+[
+    {
+        "name": "user1",
+        "contacts": [
+            {
+                "name": "user2",
+                "lastMessage": "Hey, are we meeting today?",
+                "lastMessageTime": "2026-02-12T09:30:00"
+            },
+            {
+                "name": "user3",
+                "lastMessage": "Project is almost done.",
+                "lastMessageTime": "2026-02-11T18:45:00"
+            },
+            {
+                "name": "user4",
+                "lastMessage": "Send me the file.",
+                "lastMessageTime": "2026-02-11T14:20:00"
+            },
+            {
+                "name": "user5",
+                "lastMessage": "Let's catch up later!",
+                "lastMessageTime": "2026-02-10T20:10:00"
+            },
+            {
+                "name": "user6",
+                "lastMessage": "Good morning ☀️",
+                "lastMessageTime": "2026-02-12T07:15:00"
+            }
+        ]
+    },
+    {
+        "name": "user2",
+        "contacts": [
+            {
+                "name": "user3",
+                "lastMessage": "Did you check the email?",
+                "lastMessageTime": "2026-02-11T16:00:00"
+            },
+            {
+                "name": "user4",
+                "lastMessage": "Let’s start at 5 PM.",
+                "lastMessageTime": "2026-02-12T10:05:00"
+            },
+            {
+                "name": "user5",
+                "lastMessage": "Thanks bro!",
+                "lastMessageTime": "2026-02-10T21:30:00"
+            },
+            {
+                "name": "user6",
+                "lastMessage": "Call me when free.",
+                "lastMessageTime": "2026-02-09T19:00:00"
+            },
+            {
+                "name": "user7",
+                "lastMessage": "See you tomorrow.",
+                "lastMessageTime": "2026-02-12T08:40:00"
+            }
+        ]
+    },
+    {
+        "name": "user3",
+        "contacts": [
+            {
+                "name": "user4",
+                "lastMessage": "Meeting postponed.",
+                "lastMessageTime": "2026-02-10T13:10:00"
+            },
+            {
+                "name": "user5",
+                "lastMessage": "Okay noted.",
+                "lastMessageTime": "2026-02-12T09:55:00"
+            },
+            {
+                "name": "user6",
+                "lastMessage": "Nice work!",
+                "lastMessageTime": "2026-02-11T17:25:00"
+            },
+            {
+                "name": "user7",
+                "lastMessage": "Send location.",
+                "lastMessageTime": "2026-02-12T06:30:00"
+            },
+            {
+                "name": "user8",
+                "lastMessage": "Where are you?",
+                "lastMessageTime": "2026-02-09T22:00:00"
+            }
+        ]
+    },
+    {
+        "name": "user4",
+        "contacts": [
+            {
+                "name": "user5",
+                "lastMessage": "On my way.",
+                "lastMessageTime": "2026-02-11T11:15:00"
+            },
+            {
+                "name": "user6",
+                "lastMessage": "Let’s fix this bug.",
+                "lastMessageTime": "2026-02-12T09:10:00"
+            },
+            {
+                "name": "user7",
+                "lastMessage": "Done 👍",
+                "lastMessageTime": "2026-02-12T08:00:00"
+            },
+            {
+                "name": "user8",
+                "lastMessage": "Try restarting.",
+                "lastMessageTime": "2026-02-10T15:45:00"
+            },
+            {
+                "name": "user9",
+                "lastMessage": "Check console logs.",
+                "lastMessageTime": "2026-02-12T07:50:00"
+            }
+        ]
+    },
+    {
+        "name": "user5",
+        "contacts": [
+            {
+                "name": "user6",
+                "lastMessage": "Working on it.",
+                "lastMessageTime": "2026-02-12T09:05:00"
+            },
+            {
+                "name": "user7",
+                "lastMessage": "Let's deploy today.",
+                "lastMessageTime": "2026-02-11T18:20:00"
+            },
+            {
+                "name": "user8",
+                "lastMessage": "All good here.",
+                "lastMessageTime": "2026-02-10T12:00:00"
+            },
+            {
+                "name": "user9",
+                "lastMessage": "Can you review?",
+                "lastMessageTime": "2026-02-12T10:15:00"
+            },
+            {
+                "name": "user1",
+                "lastMessage": "Ping me later.",
+                "lastMessageTime": "2026-02-11T19:45:00"
+            }
+        ]
+    },
+    {
+        "name": "user6",
+        "contacts": [
+            {
+                "name": "user7",
+                "lastMessage": "Let's finish this today.",
+                "lastMessageTime": "2026-02-12T09:45:00"
+            },
+            {
+                "name": "user8",
+                "lastMessage": "Did you push the code?",
+                "lastMessageTime": "2026-02-11T17:10:00"
+            },
+            {
+                "name": "user9",
+                "lastMessage": "Looks good to me.",
+                "lastMessageTime": "2026-02-12T08:35:00"
+            },
+            {
+                "name": "user1",
+                "lastMessage": "I'll call you later.",
+                "lastMessageTime": "2026-02-10T20:25:00"
+            },
+            {
+                "name": "user2",
+                "lastMessage": "Meeting at 3 PM.",
+                "lastMessageTime": "2026-02-12T07:55:00"
+            }
+        ]
+    },
+    {
+        "name": "user7",
+        "contacts": [
+            {
+                "name": "user8",
+                "lastMessage": "Are you coming?",
+                "lastMessageTime": "2026-02-12T06:40:00"
+            },
+            {
+                "name": "user9",
+                "lastMessage": "Send me details.",
+                "lastMessageTime": "2026-02-11T14:15:00"
+            },
+            {
+                "name": "user1",
+                "lastMessage": "Good night!",
+                "lastMessageTime": "2026-02-10T23:00:00"
+            },
+            {
+                "name": "user2",
+                "lastMessage": "Working on backend.",
+                "lastMessageTime": "2026-02-12T09:20:00"
+            },
+            {
+                "name": "user3",
+                "lastMessage": "Let’s test it.",
+                "lastMessageTime": "2026-02-11T16:45:00"
+            }
+        ]
+    },
+    {
+        "name": "user8",
+        "contacts": [
+            {
+                "name": "user9",
+                "lastMessage": "See you soon.",
+                "lastMessageTime": "2026-02-12T08:05:00"
+            },
+            {
+                "name": "user1",
+                "lastMessage": "Did you update it?",
+                "lastMessageTime": "2026-02-11T13:25:00"
+            },
+            {
+                "name": "user2",
+                "lastMessage": "Let me know.",
+                "lastMessageTime": "2026-02-12T07:10:00"
+            },
+            {
+                "name": "user3",
+                "lastMessage": "All set 👍",
+                "lastMessageTime": "2026-02-10T18:40:00"
+            },
+            {
+                "name": "user4",
+                "lastMessage": "Fix that issue.",
+                "lastMessageTime": "2026-02-12T09:35:00"
+            }
+        ]
+    },
+    {
+        "name": "user9",
+        "contacts": [
+            {
+                "name": "user1",
+                "lastMessage": "Let’s talk later.",
+                "lastMessageTime": "2026-02-12T06:55:00"
+            },
+            {
+                "name": "user2",
+                "lastMessage": "Okay sure.",
+                "lastMessageTime": "2026-02-11T12:30:00"
+            },
+            {
+                "name": "user3",
+                "lastMessage": "Send the screenshot.",
+                "lastMessageTime": "2026-02-12T08:50:00"
+            },
+            {
+                "name": "user4",
+                "lastMessage": "Thanks for help.",
+                "lastMessageTime": "2026-02-10T19:15:00"
+            },
+            {
+                "name": "user5",
+                "lastMessage": "Let’s refactor that.",
+                "lastMessageTime": "2026-02-12T09:00:00"
+            }
+        ]
+    }
+]
