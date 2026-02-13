@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../Components/Sidebar";
 import users from "../data/users.json";
+import ChatPanel from "../Components/ChatPanel";
 
 const Chat = () => {
   const location = useLocation();
@@ -15,9 +16,10 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="h-screen p-5 overflow-hidden relative">
-      <img src="/chat_bg4.jpg" alt="bg_img" className="absolute object-cover top-0 left-0 -z-10" />
+    <section className="h-screen p-5 overflow-hidden relative flex flex-row gap-4">
+      <img src="/chat_bg4.jpg" alt="bg_img" className="absolute top-0 left-0 w-full h-screen object-cover -z-10" />
       <Sidebar user={user} />
+      <ChatPanel user={user} />
     </section>
   );
 };

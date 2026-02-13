@@ -3,7 +3,7 @@ import React from "react";
 const Sidebar = ({ user }) => {
   console.log(user.contacts);
   return (
-    <aside className="w-[20vw] h-full  flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto ">
+    <aside className="w-[25vw] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto ">
       <header className="flex justify-between items-center gap-4 px-6 py-5  rounded-t-2xl shadow-md shadow-gray-700">
         
         <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
