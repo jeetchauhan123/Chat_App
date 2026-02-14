@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Sidebar = ({ user }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   console.log(user.contacts);
   return (
-    <aside className="w-[25vw] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto ">
-      <header className="flex justify-between items-center gap-4 px-6 py-5  rounded-t-2xl shadow-md shadow-gray-700">
-        
-        <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
-          {user?.name?.charAt(0).toUpperCase()}
-        </h1>
-        <h1 className="text-xl font-semibold text-gray-300">{user?.name}</h1>
+    <aside
+      className={`w-[25vw] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
+        ${collapsed ? "genie-collapse" : "genie-open"}
+  `}
+    >
+      <header className="flex justify-between items-center gap-4 px-6 py-5 rounded-t-2xl shadow-md shadow-gray-700">
+        <div className="flex items-center gap-4">
+          <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
+            {user?.name?.charAt(0).toUpperCase()}
+          </h1>
+          {!collapsed && (
+            <h1 className="text-xl font-semibold text-gray-300">
+              {user?.name}
+            </h1>
+          )}
+        </div>
+
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="text-gray-400 hover:text-white transition"
+        >
+          ☰
+        </button>
       </header>
 
       {/* chats contacts */}
