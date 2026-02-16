@@ -2,7 +2,7 @@ import React from 'react'
 
 const ChatInput = () => {
   return (
-    <div className='h-20 flex flex-row items-center '>
+    <div className='h-20 flex flex-row items-center justify-between'>
         <button className='w-12 h-12 flex items-center justify-center text-3xl font-semibold bg-gray-500 rounded-[100%]'>
             <span className='text-center flex items-center justify-center'>+</span>
         </button>
