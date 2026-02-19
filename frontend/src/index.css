@@ -40,144 +40,50 @@
 }
 
 
-
 .genie-collapse {
-  animation: genie 0.6s ease-in-out forwards;
-  transition: animation;
+  animation: genie-out 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  pointer-events: none; /* Prevent clicking while disappearing */
 }
 
+.genie-open {
+  animation: genie-in 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+}
 
-@keyframes genie {
-  0%{
-    clip-path: polygon(
-      0% 0%,
-      100% 00%,
-      100% 100%,
-      0% 100%
-    );
+@keyframes genie-out {
+  0% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    opacity: 1;
+    transform: scale(1);
   }
-  5%{
-    clip-path: polygon(
-      1% 0%,
-      90% 00%,
-      100% 100%,
-      0% 100%
-    );
+  40% {
+    /* Create a "bottleneck" - middle sections squeeze in */
+    clip-path: polygon(20% 0%, 90% 0%, 100% 100%, 10% 100%);
   }
-  10%{
-    clip-path: polygon(
-      2% 0%,
-      80% 00%,
-      100% 100%,
-      0% 100%
-    );
+  70% {
+    /* The bottom is sucked up faster than the top */
+    clip-path: polygon(60% 0%, 80% 0%, 90% 40%, 40% 40%);
+    opacity: 0.8;
   }
-  15%{
-    clip-path: polygon(
-      3% 0%,
-      70% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  20%{
-    clip-path: polygon(
-      4% 0%,
-      60% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  25%{
-    clip-path: polygon(
-      5% 0%,
-      50% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  30%{
-    clip-path: polygon(
-      6% 0%,
-      40% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  35%{
-    clip-path: polygon(
-      7% 0%,
-      30% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  40%{
-    clip-path: polygon(
-      8% 0%,
-      20% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  45%{
-    clip-path: polygon(
-      9% 0%,
-      10% 00%,
-      100% 100%,
-      0% 100%
-    );
-  }
-  50%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      80% 90%,
-      0% 90%
-    );
-  }
-  65%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      70% 80%,
-      0% 80%
-    );
-  }
-  75%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      60% 60%,
-      0% 60%
-    );
-  }
-  85%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      40% 40%,
-      0% 40%
-    );
-  }
-  90%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      20% 20%,
-      0% 20%
-    );
-  }
-  100%{
-    clip-path: polygon(
-      10% 0%,
-      10% 00%,
-      0% 0%,
-      0% 0%
-    );
+  100% {
+    /* All points vanish into the button area (roughly 90% 5%) */
+    clip-path: polygon(90% 5%, 90% 5%, 90% 5%, 90% 5%);
+    opacity: 0;
+    transform: scale(0.1);
   }
 }
 
+@keyframes genie-in {
+  0% {
+    clip-path: polygon(90% 5%, 90% 5%, 90% 5%, 90% 5%);
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  100% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

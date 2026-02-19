@@ -49,8 +49,8 @@ function formatTime(timestamp) {
 const MessageSection = () => {
   const groupedMessages = groupByDate(data.messages)
   return (
-    <div className="h-full flex flex-col text-white bg-gray-700 rounded-b-2xl">
-      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+    <div className="h-full flex flex-col text-white bg-gray-700">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
         {Object.entries(groupedMessages).map(([date, messages]) => (
           <div key={date}>
             <div className="text-center text-xs text-gray-300 my-3 uppercase tracking-wider ">

@@ -5,7 +5,7 @@ import MessageSection from "./MessageSection";
 const ChatPanel = (user) => {
   console.log("userpanel", user);
   return (
-    <div className="w-[80%] h-full flex flex-col bg-[#a75757] rounded-4xl relative">
+    <div className="w-[80%] h-full flex flex-col bg-[#2a2a2a] rounded-3xl overflow-hidden">
       <ChatNav user={user.user} />
       <div className="flex-1 min-h-0">
         <MessageSection />
