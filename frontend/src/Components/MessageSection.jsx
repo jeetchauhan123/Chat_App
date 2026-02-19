@@ -49,11 +49,11 @@ function formatTime(timestamp) {
 const MessageSection = () => {
   const groupedMessages = groupByDate(data.messages)
   return (
-    <div className="flex flex-col flex-1 text-white bg-gray-700 rounded-b-2xl">
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-end">
+    <div className="h-full flex flex-col text-white bg-gray-700 rounded-b-2xl">
+      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
         {Object.entries(groupedMessages).map(([date, messages]) => (
           <div key={date}>
-            <div className="text-center text-xs text-gray-300 my-3">
+            <div className="text-center text-xs text-gray-300 my-3 uppercase tracking-wider ">
               {date}
             </div>
 
@@ -68,7 +68,10 @@ const MessageSection = () => {
           </div>
         ))}
       </div>
-      <ChatInput />
+      {/* INPUT AREA: Stays fixed at the bottom */}
+      <div className="shrink-0">
+        <ChatInput />
+      </div>
     </div>
   );
 };

@@ -32,7 +32,61 @@
     {
       "id": "m4",
       "senderId": "u1",
-      "text": "Sure, I’m already doing that 😄",
+      "text": "Sure, I’m already doing that",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m5",
+      "senderId": "u1",
+      "text": "😄",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u2",
+      "text": "OH, Ok so i have worked on the components related to sign in",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u1",
+      "text": "Yeah i have seen that, its good",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u2",
+      "text": "Thank you",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u2",
+      "text": "i have also seen your work regarding the chat panel and its godd as well",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u1",
+      "text": "Haha, Thank you for that",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u1",
+      "text": "so now that the frontend is getting ready",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u1",
+      "text": "what about the backend and database",
+      "timestamp": "2026-02-17T14:12:00"
+    },
+    {
+      "id": "m4",
+      "senderId": "u2",
+      "text": "about the backend we are gping to do it in asp.net technology and as for the database we have choosen the postgre sql to have our database operations",
       "timestamp": "2026-02-17T14:12:00"
     }
   ]

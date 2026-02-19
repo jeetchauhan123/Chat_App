@@ -6,7 +6,7 @@ const Sidebar = ({ user }) => {
   console.log(user.contacts);
   return (
     <aside
-      className={`w-[25vw] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
+      className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
         ${collapsed ? "genie-collapse" : "genie-open"}
   `}
     >

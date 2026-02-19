@@ -3,7 +3,7 @@ import React from "react";
 const ChatNav = (user) => {
   console.log("chatnav", user);
   return (
-    <section className="px-6 py-4 flex justify-between bg-[#434343] rounded-t-2xl">
+    <section className="h-[8%] w-full px-6 py-4 flex justify-between items-center bg-[#434343] rounded-t-2xl">
       <div className="flex items-center gap-4">
         <span className="w-10 h-10 p-4 flex items-center justify-center font-bold rounded-full bg-[#9e9e9e]">
           {user?.user?.name?.charAt(0).toUpperCase()}

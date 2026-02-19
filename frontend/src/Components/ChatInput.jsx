@@ -12,7 +12,7 @@ const ChatInput = () => {
     //     </button>
     // </div>
 
-    <div className="h-20 px-4 flex items-center gap-4 bg-[#434343] rounded-b-2xl">
+    <div className="h-20 w-full px-4 flex items-center gap-4 bg-[#434343] rounded-b-2xl ">
       <button className="w-12 h-12 flex items-center justify-center text-5xl font-normal bg-gray-500 rounded-full leading-none">
         <span className='leading-none relative -top-[4px]'>+</span>
       </button>
