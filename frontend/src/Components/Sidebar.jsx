@@ -6,25 +6,26 @@ const Sidebar = ({ user }) => {
   console.log(user.contacts);
   return (
     <aside
-      className={`h-full flex flex-col bg-[#201919] rounded-2xl overflow-hidden transition-all duration-500 ease-in-out
-        ${collapsed ? "w-0 opacity-0 genie-collapse" : "w-[25%] opacity-100 genie-open"}
-      `}
+      className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
+        ${collapsed ? "genie-collapse" : "genie-open"}`}
     >
-      <header className="flex justify-between items-center gap-4 px-6 py-5 border-b border-gray-800">
-        <div className="flex items-center gap-4 min-w-[150px]">
-          <h1 className="w-10 h-10 shrink-0 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
+      <header className="flex justify-between items-center gap-4 px-6 py-5 rounded-t-2xl shadow-md shadow-gray-700">
+        <div className="flex items-center gap-4">
+          <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
             {user?.name?.charAt(0).toUpperCase()}
           </h1>
-          <h1 className="text-xl font-semibold text-gray-300 truncate">
-            {user?.name}
-          </h1>
+          {!collapsed && (
+            <h1 className="text-xl font-semibold text-gray-300">
+              {user?.name}
+            </h1>
+          )}
         </div>
 
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="text-gray-400 hover:text-white transition-all z-50 p-2"
+          className="text-gray-400 hover:text-white transition"
         >
-          {collapsed ? "➡" : "☰"}
+          ☰
         </button>
       </header>
 
