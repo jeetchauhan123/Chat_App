@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ChatApp.API.Data;
+using ChatApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatApp.API.Controllers
 {
@@ -7,25 +9,79 @@ namespace ChatApp.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetUsers()
+        private readonly AppDbContext _context;
+
+        // Temporary OTP storage (in-memory)
+        private static Dictionary<string, string> _otpStorage = new();
+
+        public UsersController(AppDbContext context)
         {
-            return Ok(new[]
-            {
-                new { id = 1, name = "Alice" },
-                new { id = 2, name = "Bob" }
-            });
+            _context = context;
         }
 
-        [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        // STEP 1: Generate OTP
+        [HttpPost("generate-otp")]
+        public IActionResult GenerateOtp([FromBody] EmailRequest request)
         {
+            var email = request.Email;
+
+            var random = new Random();
+            var otp = random.Next(1000, 9999).ToString();
+
+            _otpStorage[email] = otp;
+
+            Console.WriteLine($"OTP for {email} is: {otp}");
+
+            return Ok(new { message = "OTP generated" });
+        }
+
+        // STEP 2: Verify OTP and Login/Register
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] OtpRequest request)
+        {
+            if (!_otpStorage.ContainsKey(request.Email) ||
+                _otpStorage[request.Email] != request.Otp)
+            {
+                return BadRequest("Invalid OTP");
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    Email = request.Email,
+                    Name = request.Email.Split('@')[0],
+                    CreatedAt = DateTime.UtcNow,
+                    IsOnline = true
+                };
+
+                _context.Users.Add(user);
+            }
+            else
+            {
+                user.IsOnline = true;
+            }
+
+            await _context.SaveChangesAsync();
+
+            _otpStorage.Remove(request.Email); // remove after success
+
             return Ok(user);
         }
     }
-    public class User
+
+    // DTO class
+    public class OtpRequest
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Otp { get; set; }
+    }
+    // DTO class for email
+    public class EmailRequest
+    {
+        public string Email { get; set; }
     }
 }

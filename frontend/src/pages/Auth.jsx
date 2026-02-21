@@ -1,31 +1,78 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import users from "../data/users.json";
 
 const Auth = () => {
   const [otpPage, setOtpPage] = useState(false);
+  const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
 
-  const EmailBtnClick = () => {
-    const findUser = users.find(
-      (user) => user.name.toLowerCase() === email.toLowerCase(),
-    );
-    if (findUser) {
+  const EmailBtnClick = async () => {
+    if (!isValidEmail(email)) {
+      alert("Please enter valid email");
+      return;
+    }
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/users/generate-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: email })
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to generate OTP");
+      }
+
       setOtpPage(true);
-    } else {
-      alert("User not found");
+    } catch (error) {
+      console.error(error);
+      alert("Server error while generating OTP");
     }
   };
 
-  const OtpBtnClick = () => {
-    const foundUser = users.find(
-      (user) => user.name.toLowerCase() === email.toLowerCase(),
-    );
-    console.log(foundUser)
-    setOtpPage(false);
-    navigate("/", { state: { user: foundUser } });
+  const OtpBtnClick = async () => {
+    if (otp.length !== 4) {
+      alert("Enter 4 digit OTP");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/users/verify-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            otp: otp,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        alert("Invalid OTP");
+        return;
+      }
+
+      const user = await response.json();
+
+      navigate("/", { state: { user } });
+    } catch (error) {
+      console.error(error);
+      alert("Server error while verifying OTP");
+    }
+  };
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   return (
@@ -86,8 +133,10 @@ const Auth = () => {
 
             <input
               type="text"
+              value={otp}
               name="otp"
               id="otp"
+              onChange={(e) => setOtp(e.target.value)}
               className="bg-gray-100 w-70 h-10 rounded-full text-center border"
             />
             <section className="w-70 flex gap-4">
