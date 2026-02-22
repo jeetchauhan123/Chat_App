@@ -15,7 +15,7 @@ const Auth = () => {
     }
     try {
       const response = await fetch(
-        "http://localhost:5001/api/users/generate-otp",
+        "https://localhost:7028/api/users/generate-otp",
         {
           method: "POST",
           headers: {
@@ -44,7 +44,7 @@ const Auth = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5001/api/users/verify-otp",
+        "https://localhost:7028/api/users/verify-otp",
         {
           method: "POST",
           headers: {
