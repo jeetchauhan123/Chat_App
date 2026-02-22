@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/authSlice";
 
 const Auth = () => {
   const [otpPage, setOtpPage] = useState(false);
@@ -7,6 +9,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const EmailBtnClick = async () => {
     if (!isValidEmail(email)) {
@@ -14,16 +17,13 @@ const Auth = () => {
       return;
     }
     try {
-      const response = await fetch(
-        "/api/users/generate-otp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: email })
+      const response = await fetch("/api/users/generate-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ email: email }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to generate OTP");
@@ -43,19 +43,16 @@ const Auth = () => {
     }
 
     try {
-      const response = await fetch(
-        "/api/users/verify-otp",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            otp: otp,
-          }),
+      const response = await fetch("/api/users/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          email: email,
+          otp: otp,
+        }),
+      });
 
       if (!response.ok) {
         alert("Invalid OTP");
@@ -63,8 +60,8 @@ const Auth = () => {
       }
 
       const user = await response.json();
-
-      navigate("/", { state: { user } });
+      dispatch(setUser(user));
+      navigate("/");
     } catch (error) {
       console.error(error);
       alert("Server error while verifying OTP");

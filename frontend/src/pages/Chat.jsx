@@ -2,10 +2,10 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../Components/Sidebar";
 import ChatPanel from "../Components/ChatPanel";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
-  const location = useLocation();
-  const user = location.state?.user;
+  const user = useSelector((state) => state.auth.user);
   console.log(user);
 
   if (!user) {

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { setConversations, setSelectedUser } from "../store/chatSlice";
 
-const Sidebar = ({ user }) => {
+const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [conversations, setConversations] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const conversations = useSelector((state) => state.chat.conversations);
+
 
   useEffect(() => {
     if (!user?.userId) return;
@@ -13,7 +19,7 @@ const Sidebar = ({ user }) => {
     axios
       .get(`/api/sidebar/conversations/${user.userId}`)
       .then((res) => {
-        setConversations(res.data);
+        dispatch(setConversations(res.data));
       })
       .catch((err) => console.log(err));
   }, [user]);
@@ -72,6 +78,7 @@ const Sidebar = ({ user }) => {
             {searchResults.map((u) => (
               <div
                 key={u.userId}
+                onClick={() => dispatch(setSelectedUser(u))}
                 className="px-5 py-4 hover:bg-[#373131] cursor-pointer text-white"
               >
                 {u.name}
