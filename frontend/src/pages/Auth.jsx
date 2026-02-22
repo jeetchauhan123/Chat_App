@@ -15,7 +15,7 @@ const Auth = () => {
     }
     try {
       const response = await fetch(
-        "https://localhost:7028/api/users/generate-otp",
+        "/api/users/generate-otp",
         {
           method: "POST",
           headers: {
@@ -44,7 +44,7 @@ const Auth = () => {
 
     try {
       const response = await fetch(
-        "https://localhost:7028/api/users/verify-otp",
+        "/api/users/verify-otp",
         {
           method: "POST",
           headers: {
@@ -147,7 +147,7 @@ const Auth = () => {
                 Previous
               </button>
               <button
-                className="bg-amber-100 w-1/2 h-10 mb-2 rounded-full text-lg"
+                className="bg-amber-100 w-1/2 h-10 mb-2 rounded-full text-lg cursor-pointer"
                 onClick={() => OtpBtnClick()}
               >
                 Submit
@@ -170,7 +170,7 @@ const Auth = () => {
                 className="bg-gray-100 w-70 h-10 rounded-full text-center border"
               />
               <button
-                className="bg-amber-100 w-70 h-10 mb-2 rounded-full text-lg"
+                className="bg-amber-100 w-70 h-10 mb-2 rounded-full text-lg cursor-pointer"
                 onClick={() => EmailBtnClick()}
               >
                 Next

@@ -5,12 +5,21 @@ import MessageSection from "./MessageSection";
 const ChatPanel = (user) => {
   console.log("userpanel", user);
   return (
-    <div className="w-[80%] h-full flex flex-col bg-[#2a2a2a] rounded-3xl overflow-hidden">
-      <ChatNav user={user.user} />
-      <div className="flex-1 min-h-0">
-        <MessageSection />
-      </div>
+    <div className="w-[80%] h-full flex flex-col justify-center items-center bg-[#2a2a2a] rounded-3xl overflow-hidden">
+      <video
+        src="/message5.mp4"
+        className="w-120 h-120 rounded-3xl object-cover drop-shadow-[0_0_50px] drop-shadow-[#f5deb3c3]"
+        autoPlay
+        loop
+        muted
+      ></video>
     </div>
+    // <div className="w-[80%] h-full flex flex-col bg-[#2a2a2a] rounded-3xl overflow-hidden">
+    //   <ChatNav user={user.user} />
+    //   <div className="flex-1 min-h-0">
+    //     <MessageSection />
+    //   </div>
+    // </div>
   );
 };
 

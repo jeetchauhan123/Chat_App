@@ -1,9 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Sidebar = ({ user }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [conversations, setConversations] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
-  console.log(user.contacts);
+  useEffect(() => {
+    if (!user?.userId) return;
+
+    axios
+      .get(`/api/sidebar/conversations/${user.userId}`)
+      .then((res) => {
+        setConversations(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [user]);
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setSearchResults([]);
+      return;
+    }
+
+    axios
+      .get(`/api/users/search?query=${searchTerm}`)
+      .then((res) => setSearchResults(res.data))
+      .catch((err) => console.log(err));
+  }, [searchTerm]);
+
   return (
     <aside
       className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
@@ -14,6 +40,7 @@ const Sidebar = ({ user }) => {
           <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
             {user?.name?.charAt(0).toUpperCase()}
           </h1>
+
           {!collapsed && (
             <h1 className="text-xl font-semibold text-gray-300">
               {user?.name}
@@ -29,56 +56,88 @@ const Sidebar = ({ user }) => {
         </button>
       </header>
 
-      {/* chats contacts */}
-      <main className="flex flex-col ">
-        {user?.contacts?.map((c, index) => (
-          <section key={index} className="flex flex-col rounded-xl">
-            <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
-              <div className="flex flex-row justify-between items-center text-white">
-                {/* name */}
-                <span className="text-lg font-semibold">{c.name}</span>
+      <div className="px-4 py-3">
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 rounded-full bg-[#2d2424] text-white outline-none"
+        />
+      </div>
 
-                {/* time */}
-                <span className="text-[#acacac] text-xs ">
-                  {new Date(c.lastMessageTime).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
+      <main className="flex flex-col">
+        {searchResults.length > 0 && (
+          <div>
+            {searchResults.map((u) => (
+              <div
+                key={u.userId}
+                className="px-5 py-4 hover:bg-[#373131] cursor-pointer text-white"
+              >
+                {u.name}
               </div>
-
-              {/* last message */}
-              <p className="truncate  text-[#acacac] ">{c.lastMessage}</p>
-            </div>
+            ))}
             <hr className="text-[#575454] mx-4" />
-          </section>
-        ))}
-        {user?.contacts?.map((c, index) => (
-          <section key={index} className="flex flex-col rounded-xl">
-            <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
-              <div className="flex flex-row justify-between items-center text-white">
-                {/* name */}
-                <span className="text-lg font-semibold">{c.name}</span>
+          </div>
+        )}
+        {conversations.length === 0 ? (
+          <div className="text-gray-400 p-6">
+            Start having conversations with people you know.
+          </div>
+        ) : (
+          conversations.map((c) => (
+            <section
+              key={c.conversationId}
+              className="flex flex-col rounded-xl"
+            >
+              <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
+                <div className="flex flex-row justify-between items-center text-white">
+                  <span className="text-lg font-semibold">
+                    Conversation {c.conversationId}
+                  </span>
 
-                {/* time */}
-                <span className="text-[#acacac] text-xs ">
-                  {new Date(c.lastMessageTime).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
+                  <span className="text-[#acacac] text-xs">
+                    {new Date(c.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+
+                <p className="truncate text-[#acacac]">
+                  Last message coming soon...
+                </p>
               </div>
-
-              {/* last message */}
-              <p className="truncate  text-[#acacac] ">{c.lastMessage}</p>
-            </div>
-            <hr className="text-[#575454] mx-4" />
-          </section>
-        ))}
+              <hr className="text-[#575454] mx-4" />
+            </section>
+          ))
+        )}
       </main>
-      <main className="flex flex-col gap-4"></main>
     </aside>
   );
 };
 
 export default Sidebar;
+
+// {user?.contacts?.map((c, index) => (
+//           <section key={index} className="flex flex-col rounded-xl">
+//             <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
+//               <div className="flex flex-row justify-between items-center text-white">
+//                 {/* name */}
+//                 <span className="text-lg font-semibold">{c.name}</span>
+
+//                 {/* time */}
+//                 <span className="text-[#acacac] text-xs ">
+//                   {new Date(c.lastMessageTime).toLocaleTimeString([], {
+//                     hour: "2-digit",
+//                     minute: "2-digit",
+//                   })}
+//                 </span>
+//               </div>
+
+//               {/* last message */}
+//               <p className="truncate  text-[#acacac] ">{c.lastMessage}</p>
+//             </div>
+//             <hr className="text-[#575454] mx-4" />
+//           </section>
+//         ))}

@@ -71,6 +71,16 @@ namespace ChatApp.API.Controllers
 
             return Ok(user);
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsers(string query)
+        {
+            var users = await _context.Users
+                .Where(u => u.Name.Contains(query))
+                .ToListAsync();
+
+            return Ok(users);
+        }
     }
 
     // DTO class
