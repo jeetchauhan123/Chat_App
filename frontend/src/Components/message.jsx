@@ -19,11 +19,3 @@ const Message = ({ text, time, isOwn }) => {
 
 export default Message;
 
-{
-  /* <div className="flex justify-end px-3 py-1">
-      <div className="max-w-[70%] bg-[#4f4f4f] text-white rounded-2xl px-4 py-2 flex flex-col">
-        <span className="text-sm">this is last message</span>
-        <span className="text-[10px] text-gray-300 self-end mt-1">2:16 PM</span>
-      </div>
-    </div> */
-}
