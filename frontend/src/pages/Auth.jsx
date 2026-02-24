@@ -59,8 +59,13 @@ const Auth = () => {
         return;
       }
 
-      const user = await response.json();
-      dispatch(setUser(user));
+      const data = await response.json(); // ✅ FIXED
+
+      console.log(data); // optional debug
+
+      localStorage.setItem("token", data.token); // ✅ FIXED
+      dispatch(setUser(data.user)); // ✅ FIXED
+
       navigate("/");
     } catch (error) {
       console.error(error);
