@@ -36,9 +36,15 @@ const Sidebar = () => {
       .catch((err) => console.log(err));
   }, [searchTerm]);
 
+
+  const onSearchClick = (u) =>{
+    setSearchTerm(""); 
+    dispatch(setSelectedUser(u))
+  }
+
   return (
     <aside
-      className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto 
+      className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
         ${collapsed ? "genie-collapse" : "genie-open"}`}
     >
       <header className="flex justify-between items-center gap-4 px-6 py-5 rounded-t-2xl shadow-md shadow-gray-700">
@@ -78,7 +84,7 @@ const Sidebar = () => {
             {searchResults.map((u) => (
               <div
                 key={u.userId}
-                onClick={() => dispatch(setSelectedUser(u))}
+                onClick={() => onSearchClick(u)}
                 className="px-5 py-4 hover:bg-[#373131] cursor-pointer text-white"
               >
                 {u.name}

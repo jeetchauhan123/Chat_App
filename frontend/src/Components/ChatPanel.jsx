@@ -8,7 +8,7 @@ const ChatPanel = () => {
 
   if (!selectedUser) {
     return (
-      <div className="w-[80%] h-full flex justify-center items-center bg-[#2a2a2a] rounded-3xl">
+      <div className="w-[80%] h-full flex justify-center items-center bg-[#2a2a2a] rounded-3xl shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
         <video
           src="/message5.mp4"
           className="w-120 h-120 rounded-3xl object-cover drop-shadow-[0_0_50px] drop-shadow-[#f5deb3c3]"
