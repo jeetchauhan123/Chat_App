@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setConversations, setSelectedUser } from "../store/chatSlice";
+import { setConversations, setSelectedUser, setSelectedConversationId } from "../store/chatSlice";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -11,7 +11,6 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const conversations = useSelector((state) => state.chat.conversations);
-
 
   useEffect(() => {
     if (!user?.userId) return;
@@ -36,11 +35,31 @@ const Sidebar = () => {
       .catch((err) => console.log(err));
   }, [searchTerm]);
 
+  const onSearchClick = async (u) => {
+    setSearchTerm("");
 
-  const onSearchClick = (u) =>{
-    setSearchTerm(""); 
-    dispatch(setSelectedUser(u))
-  }
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.post(
+        "/api/conversations/private",
+        {
+          user1Id: user.userId,
+          user2Id: u.userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      dispatch(setSelectedUser(u));
+      dispatch(setSelectedConversationId(res.data.conversationId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <aside

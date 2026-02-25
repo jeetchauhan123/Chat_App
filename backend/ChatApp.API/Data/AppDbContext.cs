@@ -14,6 +14,7 @@ namespace ChatApp.API.Data
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationMember> ConversationMembers { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageStatus> MessageStatuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,6 +106,26 @@ namespace ChatApp.API.Data
 
                 entity.Property(m => m.CreatedAt)
                       .HasColumnName("created_at");
+            });
+
+            // ================= MESSAGE STATUS =================
+            modelBuilder.Entity<MessageStatus>(entity =>
+            {
+                entity.ToTable("message_status");
+
+                entity.HasKey(ms => new { ms.MessageId, ms.UserId });
+
+                entity.Property(ms => ms.MessageId)
+                      .HasColumnName("message_id");
+
+                entity.Property(ms => ms.UserId)
+                      .HasColumnName("user_id");
+
+                entity.Property(ms => ms.Status)
+                      .HasColumnName("status");
+
+                entity.Property(ms => ms.UpdatedAt)
+                      .HasColumnName("updated_at");
             });
 
             // ================= RELATIONSHIPS =================

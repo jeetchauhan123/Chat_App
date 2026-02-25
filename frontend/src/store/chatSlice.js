@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  conversations: [],
-  selectedUser: null,
-  messages: []
-};
-
 const chatSlice = createSlice({
   name: "chat",
-  initialState,
+  initialState: {
+    conversations: [],
+    selectedUser: null,
+    selectedConversationId: null,
+    messages: []
+  },
   reducers: {
     setConversations: (state, action) => {
       state.conversations = action.payload;
@@ -16,8 +15,14 @@ const chatSlice = createSlice({
     setSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
     },
+    setSelectedConversationId: (state, action) => {
+      state.selectedConversationId = action.payload;
+    },
     setMessages: (state, action) => {
       state.messages = action.payload;
+    },
+    addMessage: (state, action) => {
+      state.messages.push(action.payload);
     }
   }
 });
@@ -25,7 +30,9 @@ const chatSlice = createSlice({
 export const {
   setConversations,
   setSelectedUser,
-  setMessages
+  setSelectedConversationId,
+  setMessages,
+  addMessage
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
