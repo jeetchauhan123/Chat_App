@@ -5,8 +5,21 @@ import ChatPanel from "../Components/ChatPanel";
 import { useSelector } from "react-redux";
 
 const Chat = () => {
-  const user = useSelector((state) => state.auth.user);
+  const { user, loading } = useSelector((state) => state.auth);
   console.log(user);
+
+  if (loading)
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <video
+          src="/chat-loading2.mp4"
+          autoPlay
+          loop
+          muted
+          className="h-fit w-fit object-cover"
+        />
+      </div>
+    );
 
   if (!user) {
     return <p className="p-5">User not found</p>;
