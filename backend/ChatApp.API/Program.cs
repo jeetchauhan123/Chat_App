@@ -1,6 +1,7 @@
 using ChatApp.API.Data;
-using Microsoft.EntityFrameworkCore;
+using ChatApp.API.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -23,7 +24,9 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:5173")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // VERY IMPORTANT
+
         });
 });
 
@@ -49,7 +52,26 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/chatHub"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
 });
+
+
+builder.Services.AddSignalR();
 
 
 
@@ -70,5 +92,7 @@ app.UseAuthentication();   // ✅ ADD THIS
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

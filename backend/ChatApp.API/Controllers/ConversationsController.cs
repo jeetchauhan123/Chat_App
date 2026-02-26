@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ChatApp.API.Data;
 using ChatApp.API.Models;
+using Microsoft.AspNetCore.SignalR;
+using ChatApp.API.Hubs;
 
 namespace ChatApp.API.Controllers
 {
@@ -10,10 +12,12 @@ namespace ChatApp.API.Controllers
     public class ConversationsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public ConversationsController(AppDbContext context)
+        public ConversationsController(AppDbContext context, IHubContext<ChatHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // ============================================
@@ -119,8 +123,24 @@ namespace ChatApp.API.Controllers
             // update last_message_id
             var conversation = await _context.Conversations.FindAsync(conversationId);
             conversation.LastMessageId = message.MessageId;
-
             await _context.SaveChangesAsync();
+
+            // 🔥 GET RECEIVER ID
+            var receiverId = await _context.ConversationMembers
+                .Where(cm => cm.ConversationId == conversationId && cm.UserId != request.SenderId)
+                .Select(cm => cm.UserId)
+                .FirstOrDefaultAsync();
+
+            // 🔥 SEND REAL-TIME MESSAGE
+            await _hubContext.Clients.User(receiverId.ToString())
+                .SendAsync("ReceiveMessage", new
+                {
+                    message.MessageId,
+                    message.ConversationId,
+                    message.SenderId,
+                    message.Content,
+                    message.CreatedAt
+                });
 
             return Ok(new
             {

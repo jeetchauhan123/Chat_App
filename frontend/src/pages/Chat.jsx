@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../Components/Sidebar";
 import ChatPanel from "../Components/ChatPanel";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { startSignalRConnection, getConnection } from "../signalr";
+import { addMessage } from "../store/chatSlice";
 
 const Chat = () => {
+  const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
   console.log(user);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const token = localStorage.getItem("token");
+
+    startSignalRConnection(token)
+      .then(() => {
+        const connection = getConnection();
+
+        connection.on("ReceiveMessage", (message) => {
+          console.log("Message received from SignalR:", message);
+          dispatch(addMessage(message));
+        });
+
+        console.log("SignalR Connected");
+      })
+      .catch((err) => console.log("SignalR Error:", err));
+  }, [user]);
 
   if (loading)
     return (

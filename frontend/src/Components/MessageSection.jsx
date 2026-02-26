@@ -33,19 +33,65 @@ const MessageSection = () => {
 
   if (!selectedConversationId) return null;
 
+  // 1️⃣ Sort messages by time (important for professional chat flow)
+  const sortedMessages = [...messages].sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+  );
+
+  // 2️⃣ Group messages by date
+  const groupedMessages = sortedMessages.reduce((groups, msg) => {
+    const dateKey = new Date(msg.createdAt).toDateString();
+
+    if (!groups[dateKey]) {
+      groups[dateKey] = [];
+    }
+
+    groups[dateKey].push(msg);
+    return groups;
+  }, {});
+
+  const formatDateLabel = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+
+    const isToday = date.toDateString() === today.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+
+    if (isToday) return "Today";
+    if (isYesterday) return "Yesterday";
+
+    return date.toLocaleDateString([], {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="h-full flex flex-col text-white bg-gray-700">
       <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-        {messages.map((msg) => (
-          <Message
-            key={msg.messageId}
-            text={msg.content}
-            time={new Date(msg.createdAt).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-            isOwn={msg.senderId === user.userId}
-          />
+        {Object.entries(groupedMessages).map(([date, msgs]) => (
+          <div key={date}>
+            <div className="text-center text-xs text-gray-400 my-4 font-medium">
+              {formatDateLabel(date)}
+            </div>
+
+            {msgs.map((msg) => (
+              <Message
+                key={msg.messageId}
+                text={msg.content}
+                time={new Date(msg.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+                isOwn={msg.senderId === user.userId}
+              />
+            ))}
+          </div>
         ))}
       </div>
 
