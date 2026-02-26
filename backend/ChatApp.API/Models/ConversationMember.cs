@@ -13,5 +13,8 @@ namespace ChatApp.API.Models
 
         [Column("joined_at")]
         public DateTime JoinedAt { get; set; }
+
+        public Conversation Conversation { get; set; }
+        public User User { get; set; }
     }
 }

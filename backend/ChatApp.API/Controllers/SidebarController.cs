@@ -71,13 +71,28 @@ namespace ChatApp.API.Controllers
         [HttpGet("conversations/{userId}")]
         public async Task<IActionResult> GetUserConversations(int userId)
         {
-            var conversations = await (
-                from c in _context.Conversations
-                join cm in _context.ConversationMembers
-                    on c.ConversationId equals cm.ConversationId
-                where cm.UserId == userId
-                select c
-            ).ToListAsync();
+            var conversations = await _context.Conversations
+                .Where(c => c.ConversationMembers.Any(m => m.UserId == userId))
+                .Include(c => c.ConversationMembers)
+                    .ThenInclude(cm => cm.User)
+                .Include(c => c.LastMessage)
+                .OrderByDescending(c => c.LastMessage != null ? c.LastMessage.CreatedAt : c.CreatedAt)
+                .Select(c => new
+                {
+                    c.ConversationId,
+                    c.ConversationType,
+                    c.CreatedAt,
+                    LastMessage = c.LastMessage != null ? c.LastMessage.Content : null,
+                    OtherUser = c.ConversationMembers
+                        .Where(m => m.UserId != userId)
+                        .Select(m => new
+                        {
+                            m.User.UserId,
+                            m.User.Name
+                        })
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
 
             return Ok(conversations);
         }

@@ -9,5 +9,9 @@
         public bool IsOnline { get; set; }
         public DateTime? LastSeen { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<ConversationMember> ConversationMembers { get; set; }
+        public ICollection<Message> SentMessages { get; set; }
+        public ICollection<MessageStatus> MessageStatuses { get; set; }
     }
 }

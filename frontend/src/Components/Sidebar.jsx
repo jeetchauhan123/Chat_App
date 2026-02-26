@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setConversations, setSelectedUser, setSelectedConversationId } from "../store/chatSlice";
+import {
+  setConversations,
+  setSelectedUser,
+  setSelectedConversationId,
+} from "../store/chatSlice";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -13,14 +17,23 @@ const Sidebar = () => {
   const conversations = useSelector((state) => state.chat.conversations);
 
   useEffect(() => {
-    if (!user?.userId) return;
+    console.log("Sidebar useEffect triggered");
+    console.log("User:", user);
+
+    if (!user?.userId) {
+      console.log("User ID not available");
+      return;
+    }
+
+    console.log("Calling sidebar API...");
 
     axios
       .get(`/api/sidebar/conversations/${user.userId}`)
       .then((res) => {
+        console.log("Sidebar API response:", res.data);
         dispatch(setConversations(res.data));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Sidebar API error:", err));
   }, [user]);
 
   useEffect(() => {
@@ -121,11 +134,20 @@ const Sidebar = () => {
             <section
               key={c.conversationId}
               className="flex flex-col rounded-xl"
+              onClick={() => {
+                dispatch(setSelectedConversationId(c.conversationId));
+                dispatch(
+                  setSelectedUser({
+                    userId: c.otherUser?.userId,
+                    name: c.otherUser?.name,
+                  }),
+                );
+              }}
             >
               <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
                 <div className="flex flex-row justify-between items-center text-white">
                   <span className="text-lg font-semibold">
-                    Conversation {c.conversationId}
+                    {c.otherUser?.name || "Unknown User"}
                   </span>
 
                   <span className="text-[#acacac] text-xs">
@@ -137,7 +159,7 @@ const Sidebar = () => {
                 </div>
 
                 <p className="truncate text-[#acacac]">
-                  Last message coming soon...
+                  {c.lastMessage || "No messages yet"}
                 </p>
               </div>
               <hr className="text-[#575454] mx-4" />

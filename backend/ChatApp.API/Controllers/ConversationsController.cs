@@ -84,9 +84,17 @@ namespace ChatApp.API.Controllers
         public async Task<IActionResult> GetMessages(int conversationId)
         {
             var messages = await _context.Messages
-                .Where(m => m.ConversationId == conversationId)
-                .OrderBy(m => m.CreatedAt)
-                .ToListAsync();
+            .Where(m => m.ConversationId == conversationId)
+            .OrderBy(m => m.CreatedAt)
+            .Select(m => new
+            {
+                m.MessageId,
+                m.ConversationId,
+                m.SenderId,
+                m.Content,
+                m.CreatedAt
+            })
+            .ToListAsync();
 
             return Ok(messages);
         }
@@ -114,7 +122,14 @@ namespace ChatApp.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(message);
+            return Ok(new
+            {
+                message.MessageId,
+                message.ConversationId,
+                message.SenderId,
+                message.Content,
+                message.CreatedAt
+            });
         }
     }
 

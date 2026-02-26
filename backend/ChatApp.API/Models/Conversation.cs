@@ -9,5 +9,9 @@
         public int? LastMessageId { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<ConversationMember> ConversationMembers { get; set; }
+        public ICollection<Message> Messages { get; set; }
+        public Message? LastMessage { get; set; }
     }
 }

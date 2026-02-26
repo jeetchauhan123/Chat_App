@@ -128,39 +128,92 @@ namespace ChatApp.API.Data
                       .HasColumnName("updated_at");
             });
 
+            //// ================= RELATIONSHIPS =================
+
+            //// ConversationMembers → Users
+            //modelBuilder.Entity<ConversationMember>()
+            //    .HasOne<User>()
+            //    .WithMany()
+            //    .HasForeignKey(cm => cm.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //// ConversationMembers → Conversations
+            //modelBuilder.Entity<ConversationMember>()
+            //    .HasOne<Conversation>()
+            //    .WithMany()
+            //    .HasForeignKey(cm => cm.ConversationId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //// Messages → Conversations
+            //modelBuilder.Entity<Message>()
+            //    .HasOne<Conversation>()
+            //    .WithMany()
+            //    .HasForeignKey(m => m.ConversationId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //// Messages → Users
+            //modelBuilder.Entity<Message>()
+            //    .HasOne<User>()
+            //    .WithMany()
+            //    .HasForeignKey(m => m.SenderId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //// Conversations → LastMessage (SET NULL)
+            //modelBuilder.Entity<Conversation>()
+            //    .HasOne<Message>()
+            //    .WithMany()
+            //    .HasForeignKey(c => c.LastMessageId)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
+
+
             // ================= RELATIONSHIPS =================
 
-            // ConversationMembers → Users
+            // ConversationMember → User
             modelBuilder.Entity<ConversationMember>()
-                .HasOne<User>()
-                .WithMany()
+                .HasOne(cm => cm.User)
+                .WithMany(u => u.ConversationMembers)
                 .HasForeignKey(cm => cm.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ConversationMembers → Conversations
+            // ConversationMember → Conversation
             modelBuilder.Entity<ConversationMember>()
-                .HasOne<Conversation>()
-                .WithMany()
+                .HasOne(cm => cm.Conversation)
+                .WithMany(c => c.ConversationMembers)
                 .HasForeignKey(cm => cm.ConversationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Messages → Conversations
+            // Message → Conversation
             modelBuilder.Entity<Message>()
-                .HasOne<Conversation>()
-                .WithMany()
+                .HasOne(m => m.Conversation)
+                .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ConversationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Messages → Users
+            // Message → Sender(User)
             modelBuilder.Entity<Message>()
-                .HasOne<User>()
-                .WithMany()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
                 .HasForeignKey(m => m.SenderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Conversations → LastMessage (SET NULL)
+            // MessageStatus → Message
+            modelBuilder.Entity<MessageStatus>()
+                .HasOne(ms => ms.Message)
+                .WithMany(m => m.MessageStatuses)
+                .HasForeignKey(ms => ms.MessageId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // MessageStatus → User
+            modelBuilder.Entity<MessageStatus>()
+                .HasOne(ms => ms.User)
+                .WithMany(u => u.MessageStatuses)
+                .HasForeignKey(ms => ms.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Conversation → LastMessage
             modelBuilder.Entity<Conversation>()
-                .HasOne<Message>()
+                .HasOne(c => c.LastMessage)
                 .WithMany()
                 .HasForeignKey(c => c.LastMessageId)
                 .OnDelete(DeleteBehavior.SetNull);

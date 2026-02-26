@@ -7,5 +7,9 @@
         public int SenderId { get; set; }
         public string Content { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
+
+        public Conversation Conversation { get; set; }
+        public User Sender { get; set; }
+        public ICollection<MessageStatus> MessageStatuses { get; set; }
     }
 }

@@ -6,5 +6,8 @@
         public int UserId { get; set; }
         public string Status { get; set; } = null!;
         public DateTime UpdatedAt { get; set; }
+
+        public Message Message { get; set; }
+        public User User { get; set; }
     }
 }
