@@ -33,12 +33,12 @@ const MessageSection = () => {
 
   if (!selectedConversationId) return null;
 
-  // 1️⃣ Sort messages by time (important for professional chat flow)
+  // Sort messages by time
   const sortedMessages = [...messages].sort(
     (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
   );
 
-  // 2️⃣ Group messages by date
+  // Group messages by date
   const groupedMessages = sortedMessages.reduce((groups, msg) => {
     const dateKey = new Date(msg.createdAt).toDateString();
 
