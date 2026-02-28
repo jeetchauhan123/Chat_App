@@ -1,301 +1,269 @@
-# 📌 Chat Application – Development Roadmap
+# 📌 Chat Application
 
-This document tracks the architectural progression, feature implementation, and planned improvements of the Chat Application project.
+This document tracks the architectural progression and feature maturity of the Chat Application project.
 
 ---
 
 # Phase 1 – UI Foundation & Page Structure
 
-## Functionality – Base Layout & Routing ✅ DONE
+## Base Layout & Routing
 
-- create main application layout structure DONE
-- configure routing between login and chat page DONE
-- implement protected route wrapper DONE
-- redirect unauthenticated users to login DONE
-- establish component folder structure DONE
+- [x] Create main application layout structure
+- [x] Configure routing between login and chat page
+- [x] Implement protected route wrapper
+- [x] Redirect unauthenticated users to login
+- [x] Establish component folder structure
 
-## Functionality – Authentication UI ✅ DONE
+## Authentication UI
 
-- create email input field DONE
-- create send otp button DONE
-- create otp input field DONE
-- create verify otp button DONE
-- implement basic form validation DONE
-- disable button when input empty DONE
-- show loading state during api call DONE
-- display error message for invalid otp DONE
+- [x] Create email input field
+- [x] Create send otp button
+- [x] Create otp input field
+- [x] Create verify otp button
+- [x] Implement basic form validation
+- [x] Disable button when input empty
+- [x] Show loading state during api call
+- [x] Display error message for invalid otp
 
-## Functionality – Chat Page Layout ✅ DONE
+## Chat Page Layout
 
-- create sidebar layout DONE
-- create chat window container DONE
-- create message list section DONE
-- create message input bar DONE
-- create send button DONE
-- implement conditional styling for sender and receiver DONE
-- implement auto scroll to bottom on new message DONE
+- [x] Create sidebar layout
+- [x] Create chat window container
+- [x] Create message list section
+- [x] Create message input bar
+- [x] Create send button
+- [x] Implement conditional styling (sender/receiver)
+- [x] Implement auto scroll to bottom
 
 ---
 
 # Phase 2 – Database Design & Backend Setup
 
-## Functionality – User Entity ✅ DONE
+## User Entity
 
-- create user model DONE
-- configure primary key (user_id) DONE
-- add email property DONE
-- add name property DONE
-- add status_message property DONE
-- add is_online property DONE
-- add last_seen property DONE
-- add created_at property DONE
-- configure unique email constraint DONE
-- configure nullable fields DONE
+- [x] Create user model
+- [x] Configure primary key (user_id)
+- [x] Add email property
+- [x] Add name property
+- [x] Add status_message property
+- [x] Add is_online property
+- [x] Add last_seen property
+- [x] Add created_at property
+- [x] Configure unique email constraint
+- [x] Configure nullable fields
 
-## Functionality – Conversation Entity ✅ DONE
+## Conversation Entity
 
-- create conversation model DONE
-- add conversation_id DONE
-- add participant references DONE
-- add last_message_id column DONE
-- configure navigation properties DONE
+- [x] Create conversation model
+- [x] Add conversation_id
+- [x] Add participant references
+- [x] Add last_message_id column
+- [x] Configure navigation properties
 
-## Functionality – Message Entity ✅ DONE
+## Message Entity
 
-- create message model DONE
-- add message_id DONE
-- add sender_id DONE
-- add receiver_id DONE
-- add conversation_id DONE
-- add message_content DONE
-- add timestamp DONE
-- configure foreign key relationships DONE
+- [x] Create message model
+- [x] Add message_id
+- [x] Add sender_id
+- [x] Add receiver_id
+- [x] Add conversation_id
+- [x] Add message_content
+- [x] Add timestamp
+- [x] Configure foreign key relationships
 
-## Functionality – Entity Framework Integration ✅ DONE
+## Entity Framework Integration
 
-- create application db context DONE
-- register db context in program configuration DONE
-- configure sql connection string DONE
-- generate initial migration DONE
-- update database DONE
-- handle schema modifications during development DONE
-- debug migration errors DONE
+- [x] Create application db context
+- [x] Register db context
+- [x] Configure sql connection string
+- [x] Generate initial migration
+- [x] Update database
+- [x] Handle schema modifications
+- [x] Debug migration errors
 
 ---
 
-# Phase 3 – OTP Authentication System
+# Phase 3 – OTP Authentication System (Security Layer)
 
-## Functionality – OTP Generation ✅ DONE
+## OTP Generation
 
-- implement otp generator method DONE
-- use random number generation logic DONE
-- store otp in memory dictionary DONE
-- map otp using email as key DONE
+- [x] Implement otp generator method
+- [x] Use random number generation logic
+- [x] Store otp in memory dictionary
+- [x] Map otp using email as key
 
-## Functionality – Send OTP Endpoint ✅ DONE
+## Send OTP Endpoint
 
-- create send otp api endpoint DONE
-- validate email input DONE
-- check existing user DONE
-- create user if not exists DONE
-- persist user to database DONE
+- [x] Create send otp api endpoint
+- [x] Validate email input
+- [x] Check existing user
+- [x] Create user if not exists
+- [x] Persist user to database
 
-## Functionality – Verify OTP Endpoint ⚠️ PARTIALLY COMPLETE
+## Verify OTP Endpoint
 
-- create verify otp api endpoint DONE
-- compare stored otp with input DONE
-- remove otp after successful verification DONE
-- return error for mismatch DONE
-- handle invalid email case DONE
-- prevent null reference exceptions DONE
-- implement otp expiration logic (pending improvement)
+- [x] Create verify otp api endpoint
+- [x] Compare stored otp with input
+- [x] Remove otp after successful verification
+- [x] Return error for mismatch
+- [x] Handle invalid email case
+- [x] Prevent null reference exceptions
+- [ ] Implement otp expiration logic
+- [ ] Add otp rate limiting
 
 ---
 
 # Phase 4 – JWT Authentication & Authorization
 
-## Functionality – JWT Token Creation ✅ DONE
+## JWT Token Creation
 
-- implement jwt creation method DONE
-- define symmetric security key DONE
-- add nameidentifier claim DONE
-- add email claim DONE
-- set expiration time DONE
-- generate signed token DONE
-- return token in response DONE
+- [x] Implement jwt creation method
+- [x] Define symmetric security key
+- [x] Add nameidentifier claim
+- [x] Add email claim
+- [x] Set expiration time
+- [x] Generate signed token
+- [x] Return token in response
 
-## Functionality – Authentication Middleware ✅ DONE
+## Authentication Middleware
 
-- configure authentication services DONE
-- configure jwt bearer options DONE
-- define token validation parameters DONE
-- enable lifetime validation DONE
-- configure clock skew DONE
-- register authentication middleware DONE
-- register authorization middleware DONE
-- verify middleware order correctness DONE
+- [x] Configure authentication services
+- [x] Configure jwt bearer options
+- [x] Define token validation parameters
+- [x] Enable lifetime validation
+- [x] Configure clock skew
+- [x] Register authentication middleware
+- [x] Register authorization middleware
+- [x] Verify middleware order correctness
 
-## Functionality – Protected APIs ✅ DONE
+## Protected APIs
 
-- apply authorize attribute DONE
-- extract user id from claims DONE
-- convert claim to integer DONE
-- validate unauthorized access behavior DONE
+- [x] Apply authorize attribute
+- [x] Extract user id from claims
+- [x] Convert claim to integer
+- [x] Validate unauthorized access behavior
 
 ---
 
-# Phase 5 – Real-Time Communication (SignalR)
+# Phase 5 – Real-Time Communication (SignalR Layer)
 
-## Functionality – Hub Setup ✅ DONE
+## Hub Setup
 
-- create chat hub class DONE
-- inherit from hub base class DONE
-- register signalr services DONE
-- map hub endpoint DONE
+- [x] Create chat hub class
+- [x] Inherit from hub base class
+- [x] Register signalr services
+- [x] Map hub endpoint
 
-## Functionality – Frontend Hub Connection ⚠️ IMPROVEMENT PENDING
+## JWT + SignalR Integration
 
-- configure hub connection url DONE
-- pass access token using accessTokenFactory DONE
-- start hub connection DONE
-- handle connection start errors DONE
-- stop hub connection on logout (pending logout implementation)
+- [x] Configure jwt bearer events
+- [x] Implement onMessageReceived event
+- [x] Extract token from query string
+- [x] Verify authenticated user inside hub
+- [x] Implement custom IUserIdProvider
+- [x] Register provider in dependency injection
+- [x] Verify Clients.User mapping
+- [x] Resolve negotiation issues
+- [x] Debug 401 authentication errors
 
-## Functionality – JWT + SignalR Integration ✅ DONE
+## Realtime Feature Enhancements
 
-- configure jwt bearer events DONE
-- implement onMessageReceived event DONE
-- extract token from query string DONE
-- debug 401 authentication errors DONE
-- resolve negotiation issues DONE
-- verify authenticated user inside hub DONE
-
-## Functionality – User Mapping ✅ DONE
-
-- implement custom IUserIdProvider DONE
-- extract NameIdentifier claim DONE
-- register provider in dependency injection DONE
-- verify Clients.User mapping DONE
-- resolve incorrect user mapping bug DONE
+- [ ] Stop hub connection on logout
+- [ ] Implement typing indicator
+- [ ] Implement online/offline presence tracking
+- [ ] Implement redis backplane for SignalR scaling
 
 ---
 
 # Phase 6 – Messaging System Logic
 
-## Functionality – Send Message Flow ✅ DONE
+## Send Message Flow
 
-- create send message api endpoint DONE
-- validate message body DONE
-- create message entity DONE
-- persist message to database DONE
-- trigger real-time signalr push DONE
-- send message to receiver DONE
-- send confirmation to sender DONE
-- prevent duplicate message rendering DONE
+- [x] Create send message api endpoint
+- [x] Validate message body
+- [x] Create message entity
+- [x] Persist message to database
+- [x] Trigger real-time signalr push
+- [x] Send message to receiver
+- [x] Send confirmation to sender
+- [x] Prevent duplicate message rendering
 
-## Functionality – Conversation Handling ✅ DONE
+## Conversation Handling
 
-- check existing conversation DONE
-- create conversation if not exists DONE
-- update last_message_id DONE
-- retrieve messages by conversation DONE
-- order messages by timestamp DONE
+- [x] Check existing conversation
+- [x] Create conversation if not exists
+- [x] Update last_message_id
+- [x] Retrieve messages by conversation
+- [x] Order messages by timestamp
+- [ ] Add pagination for older messages
+- [ ] Add infinite scroll
 
----
+## Delivery Enhancements
 
-# Phase 7 – Redux State Management
-
-## Functionality – Auth State ✅ DONE
-
-- create auth slice DONE
-- implement login reducer DONE
-- implement logout reducer DONE
-- store jwt token DONE
-- persist token in local storage DONE
-- rehydrate auth state on refresh DONE
-
-## Functionality – Chat State ✅ DONE
-
-- create chat slice DONE
-- implement add message reducer DONE
-- implement set messages reducer DONE
-- append real-time messages to state DONE
-- prevent duplicate entries DONE
-- manage selected conversation state DONE
+- [ ] Implement message delivery status (sent/delivered/seen)
 
 ---
 
-# Phase 8 – UI Enhancements & Stability
+# Phase 7 – Frontend State Management
 
-## Functionality – Message Rendering ✅ DONE
+## Auth State
 
-- render dynamic messages DONE
-- apply conditional styling DONE
-- implement date grouping logic DONE
-- render date separator DONE
-- auto scroll on new message DONE
+- [x] Create auth slice
+- [x] Implement login reducer
+- [x] Implement logout reducer
+- [x] Store jwt token
+- [x] Persist token in local storage
+- [x] Rehydrate auth state on refresh
+- [ ] Implement logout cleanup logic
 
-## Functionality – UX Improvements ✅ DONE
+## Chat State
 
-- clear input after send DONE
-- prevent empty message sending DONE
-- display loading states DONE
-- display error messages DONE
-
-## Functionality – Debugging & Stability Improvements ✅ DONE
-
-- resolve cors preflight issues DONE
-- fix credential mismatch issue DONE
-- resolve signalr negotiation 404 DONE
-- resolve jwt validation failures DONE
-- correct middleware order issue DONE
-- fix null reference exceptions DONE
-- fix message duplication bug DONE
-- fix ui re-rendering issue DONE
+- [x] Create chat slice
+- [x] Implement add message reducer
+- [x] Implement set messages reducer
+- [x] Append real-time messages to state
+- [x] Prevent duplicate entries
+- [x] Manage selected conversation state
 
 ---
 
-# Phase 9 – Feature Enhancements (Planned)
+# Phase 8 – UI Enhancements & User Controls
 
-## Functionality – User Controls
+## Message Rendering
 
-- add logout button
-- implement logout cleanup logic
-- hide/show sidebar toggle
-- implement close chat button
-- personal data update section
-- update status message feature
-- profile editing modal
+- [x] Render dynamic messages
+- [x] Apply conditional styling
+- [x] Implement date grouping logic
+- [x] Render date separator
+- [x] Auto scroll on new message
 
-## Functionality – Chat Enhancements
+## User Controls
 
-- typing indicator via signalr
-- online/offline presence tracking
-- pagination for older messages
-- infinite scroll
-- message delivery status (sent/delivered/seen)
+- [ ] Add logout button
+- [ ] Hide/show sidebar toggle
+- [ ] Implement close chat button
+- [ ] Personal data update section
+- [ ] Update status message feature
+- [ ] Profile editing modal
 
 ---
 
-# Phase 10 – Production Hardening & Architecture Upgrade
+# Phase 9 – Production Hardening & Architecture Upgrade
 
-## Functionality – Architecture Improvements
+## Architecture Improvements
 
-- add service layer abstraction
-- move business logic out of controllers
-- implement global exception middleware
-- implement standardized api response wrapper
+- [ ] Add service layer abstraction
+- [ ] Move business logic out of controllers
+- [ ] Implement global exception middleware
+- [ ] Implement standardized api response wrapper
 
-## Functionality – Security Improvements
+## Security Improvements
 
-- move jwt secret to appsettings.json
-- implement refresh token flow
-- enforce otp expiration
-- add otp rate limiting
+- [ ] Move jwt secret to appsettings.json
+- [ ] Implement refresh token flow
 
-## Functionality – Infrastructure
+## Infrastructure
 
-- add structured logging (serilog)
-- add docker support
-- deploy to cloud (azure / railway / render)
-- implement redis backplane for signalr scaling
+- [ ] Add structured logging (Serilog)
+- [ ] Add docker support
+- [ ] Deploy to cloud (Azure / Railway / Render)
