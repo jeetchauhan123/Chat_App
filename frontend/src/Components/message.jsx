@@ -7,11 +7,11 @@ const Message = ({ text, time, isOwn }) => {
     >
       <div
         className={`max-w-[70%] rounded-t-2xl px-4 py-2 flex flex-col ${
-          isOwn ? "bg-[#056162] rounded-bl-2xl" : "bg-[#262d31] rounded-br-2xl"
+          isOwn ? "bg-[#056162] rounded-bl-2xl" : "bg-[#263131] rounded-br-2xl"
         }`}
       >
-        <span className="text-sm text-white">{text}</span>
-        <span className="text-[10px] text-gray-300 self-end mt-1">{time}</span>
+        <span className="text-[16px] text-white">{text}</span>
+        <span className="text-[11px] text-gray-300 self-end mt-1">{time}</span>
       </div>
     </div>
   );

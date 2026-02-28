@@ -76,9 +76,10 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`w-[20%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
+      className={`w-[25%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
         ${collapsed ? "genie-collapse" : "genie-open"}`}
     >
+      {/* sidebar nav */}
       <header className="flex justify-between items-center gap-4 px-6 py-5 rounded-t-2xl shadow-md shadow-gray-700">
         <div className="flex items-center gap-4">
           <h1 className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
@@ -100,6 +101,7 @@ const Sidebar = () => {
         </button>
       </header>
 
+      {/* search bar */}
       <div className="px-4 py-3">
         <input
           type="text"
@@ -110,21 +112,29 @@ const Sidebar = () => {
         />
       </div>
 
+      {/* existing chats */}
       <main className="flex flex-col">
-        {searchResults.length > 0 && (
+        {/* Search Results */}
+        {searchTerm && (
           <div>
-            {searchResults.map((u) => (
-              <div
-                key={u.userId}
-                onClick={() => onSearchClick(u)}
-                className="px-5 py-4 hover:bg-[#373131] cursor-pointer text-white"
-              >
-                {u.name}
-              </div>
-            ))}
+            {searchResults.length > 0 ? (
+              searchResults.map((u) => (
+                <div
+                  key={u.userId}
+                  onClick={() => onSearchClick(u)}
+                  className="px-5 py-4 hover:bg-[#373131] cursor-pointer text-white"
+                >
+                  {u.name}
+                </div>
+              ))
+            ) : (
+              <div className="px-5 py-4 text-white">No User Found</div>
+            )}
             <hr className="text-[#575454] mx-4" />
           </div>
         )}
+
+        {/* Chats */}
         {conversations.length === 0 ? (
           <div className="text-gray-400 p-6">
             Start having conversations with people you know.
@@ -133,7 +143,7 @@ const Sidebar = () => {
           conversations.map((c) => (
             <section
               key={c.conversationId}
-              className="flex flex-col rounded-xl"
+              className="w-full flex flex-col items-center rounded-xl"
               onClick={() => {
                 dispatch(setSelectedConversationId(c.conversationId));
                 dispatch(
@@ -144,25 +154,33 @@ const Sidebar = () => {
                 );
               }}
             >
-              <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
-                <div className="flex flex-row justify-between items-center text-white">
-                  <span className="text-lg font-semibold">
-                    {c.otherUser?.name || "Unknown User"}
-                  </span>
-
-                  <span className="text-[#acacac] text-xs">
-                    {new Date(c.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
+              <div className="w-full px-4 flex flex-row items-center justify-center gap-4 rounded-xl cursor-pointer hover:bg-[#373131] transition">
+                <div className="w-10  flex items-center justify-center">
+                  <h1 className="w-10 h-10  flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
+                    {c.otherUser?.name?.charAt(0).toUpperCase()}
+                  </h1>
                 </div>
 
-                <p className="truncate text-[#acacac]">
-                  {c.lastMessage || "No messages yet"}
-                </p>
+                <div className="w-full px-0 py-6 flex flex-col rounded-xl cursor-pointer ">
+                  <div className="flex flex-row justify-between items-center text-white">
+                    <span className="text-lg font-semibold">
+                      {c.otherUser?.name || "Unknown User"}
+                    </span>
+
+                    <span className="text-[#acacac] text-xs">
+                      {new Date(c.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+
+                  <p className="truncate text-[#acacac]">
+                    {c.lastMessage || "No messages yet"}
+                  </p>
+                </div>
               </div>
-              <hr className="text-[#575454] mx-4" />
+                <hr className="text-[#575454] mx-4 h-2 w-[85%]" />
             </section>
           ))
         )}

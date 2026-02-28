@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ChatInput from "./ChatInput";
 import Message from "./message";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { setMessages } from "../store/chatSlice";
 
 const MessageSection = () => {
   const dispatch = useDispatch();
+  const messagesEndRef = useRef(null);
 
   const { selectedConversationId, messages } = useSelector(
     (state) => state.chat,
@@ -30,6 +31,10 @@ const MessageSection = () => {
       })
       .catch((err) => console.log(err));
   }, [selectedConversationId, dispatch]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages]);
 
   if (!selectedConversationId) return null;
 
@@ -93,6 +98,7 @@ const MessageSection = () => {
             ))}
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="shrink-0">
