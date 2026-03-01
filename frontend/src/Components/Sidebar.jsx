@@ -143,7 +143,7 @@ const Sidebar = () => {
           conversations.map((c) => (
             <section
               key={c.conversationId}
-              className="w-full flex flex-col items-center rounded-xl"
+              className="w-full flex flex-col items-center"
               onClick={() => {
                 dispatch(setSelectedConversationId(c.conversationId));
                 dispatch(
@@ -154,7 +154,7 @@ const Sidebar = () => {
                 );
               }}
             >
-              <div className="w-full px-4 flex flex-row items-center justify-center gap-4 rounded-xl cursor-pointer hover:bg-[#373131] transition">
+              <div className="w-full px-4 flex flex-row items-center justify-center gap-4 rounded-3xl cursor-pointer hover:bg-[#373131] transition">
                 <div className="w-10  flex items-center justify-center">
                   <h1 className="w-10 h-10  flex items-center justify-center rounded-full bg-white text-amber-600 font-bold">
                     {c.otherUser?.name?.charAt(0).toUpperCase()}
@@ -180,7 +180,7 @@ const Sidebar = () => {
                   </p>
                 </div>
               </div>
-                <hr className="text-[#575454] mx-4 h-2 w-[85%]" />
+                <hr className="text-[#575454]   w-[87%]" />
             </section>
           ))
         )}
