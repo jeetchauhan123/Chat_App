@@ -190,26 +190,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-// {user?.contacts?.map((c, index) => (
-//           <section key={index} className="flex flex-col rounded-xl">
-//             <div className="px-5 py-6 rounded-xl cursor-pointer hover:bg-[#373131] transition">
-//               <div className="flex flex-row justify-between items-center text-white">
-//                 {/* name */}
-//                 <span className="text-lg font-semibold">{c.name}</span>
-
-//                 {/* time */}
-//                 <span className="text-[#acacac] text-xs ">
-//                   {new Date(c.lastMessageTime).toLocaleTimeString([], {
-//                     hour: "2-digit",
-//                     minute: "2-digit",
-//                   })}
-//                 </span>
-//               </div>
-
-//               {/* last message */}
-//               <p className="truncate  text-[#acacac] ">{c.lastMessage}</p>
-//             </div>
-//             <hr className="text-[#575454] mx-4" />
-//           </section>
-//         ))}
