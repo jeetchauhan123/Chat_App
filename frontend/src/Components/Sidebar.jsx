@@ -76,7 +76,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`w-[25%] h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
+      className={`w-full h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
         ${collapsed ? "genie-collapse" : "genie-open"}`}
     >
       {/* sidebar nav */}

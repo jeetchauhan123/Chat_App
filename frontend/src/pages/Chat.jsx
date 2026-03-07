@@ -49,13 +49,18 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="h-screen p-5 overflow-hidden relative flex flex-row gap-4">
+    <section className="h-screen p-5 overflow-hidden relative flex flex-row gap-6">
       <img
         src="/chat_bg4.jpg"
         alt="bg_img"
         className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
       />
-      <Sidebar user={user} />
+      <div className="w-[25%] relative">
+        <div className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl">
+          <img src="/arrow5.png" alt="" className="h-5 " />
+        </div>
+        <Sidebar user={user} />
+      </div>
       <ChatPanel user={user} />
     </section>
   );
