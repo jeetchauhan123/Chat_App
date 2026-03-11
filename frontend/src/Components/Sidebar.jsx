@@ -7,8 +7,8 @@ import {
   setSelectedConversationId,
 } from "../store/chatSlice";
 
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = (collapse) => {
+  // const [collapsed, setCollapsed] = useState(collapse);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -77,7 +77,8 @@ const Sidebar = () => {
   return (
     <aside
       className={`w-full h-full flex flex-col gap-1 bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]
-        ${collapsed ? "genie-collapse" : "genie-open"}`}
+        `}
+        // ${collapse ? "genie-collapse" : "genie-open"}
     >
       {/* sidebar nav */}
       <header className="flex justify-between items-center gap-4 px-6 py-5 rounded-t-2xl shadow-md shadow-gray-700">
@@ -86,7 +87,7 @@ const Sidebar = () => {
             {user?.name?.charAt(0).toUpperCase()}
           </h1>
 
-          {!collapsed && (
+          {!collapse && (
             <h1 className="text-xl font-semibold text-gray-300">
               {user?.name}
             </h1>
@@ -94,7 +95,7 @@ const Sidebar = () => {
         </div>
 
         <button
-          onClick={() => setCollapsed(!collapsed)}
+          // onClick={() => setCollapsed(!collapsed)}
           className="text-gray-400 hover:text-white transition"
         >
           ☰
