@@ -7,7 +7,7 @@ import {
   setSelectedConversationId,
 } from "../store/chatSlice";
 
-const Sidebar = (collapse) => {
+const Sidebar = ({collapse}) => {
   // const [collapsed, setCollapsed] = useState(collapse);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);

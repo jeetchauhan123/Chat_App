@@ -57,8 +57,15 @@ const Chat = () => {
         className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
       />
       <div className="w-[25%] relative">
-        <div className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl" onClick={()=>setCollapse(!collapse)} >
-          <img src="/arrow5.png" alt="" className={`h-5 ${collapse ? "rotate-0" : "rotate-180"}`} />
+        <div
+          className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl"
+          onClick={() => setCollapse(!collapse)}
+        >
+          <img
+            src="/arrow5.png"
+            alt=""
+            className={`h-5 transition ${collapse ? "rotate-0" : "-rotate-180"}`}
+          />
         </div>
         <Sidebar collapse={collapse} />
       </div>
