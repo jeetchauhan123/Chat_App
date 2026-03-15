@@ -56,7 +56,7 @@ const Chat = () => {
         alt="bg_img"
         className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
       />
-      <div className={`${collapse ? "w-[6%]":"w-[25%]"} relative transition-all`}>
+      <div className={`${collapse ? "w-[5%]":"w-[25%]"} relative transition-all`}>
       {/* <div className={`w-[25%] relative transition-all`}> */}
         <div
           className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl"
