@@ -23,6 +23,7 @@ const Sidebar = ({ collapse }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  /*handle off click menu close*/
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -35,7 +36,6 @@ const Sidebar = ({ collapse }) => {
   }, []);
 
   /* ---------------- FETCH CONVERSATIONS ---------------- */
-
   useEffect(() => {
     console.log("[Sidebar] Component rendered");
     console.log("[Sidebar] Current user:", user);
@@ -65,13 +65,11 @@ const Sidebar = ({ collapse }) => {
   }, [user?.userId, dispatch]);
 
   /* ---------------- SEARCH USERS ---------------- */
-
   useEffect(() => {
     if (!searchTerm) {
       setSearchResults([]);
       return;
     }
-
     console.log("[Sidebar] Search term changed:", searchTerm);
 
     const delayDebounce = setTimeout(async () => {
@@ -92,7 +90,6 @@ const Sidebar = ({ collapse }) => {
   }, [searchTerm]);
 
   /* ---------------- START PRIVATE CHAT ---------------- */
-
   const onSearchClick = async (selectedUser) => {
     console.log("[Sidebar] User selected from search:", selectedUser);
 
@@ -120,7 +117,6 @@ const Sidebar = ({ collapse }) => {
       );
 
       console.log("[Sidebar] Conversation created:", res.data);
-
       dispatch(setSelectedUser(selectedUser));
       dispatch(setSelectedConversationId(res.data.conversationId));
     } catch (err) {
@@ -135,7 +131,6 @@ const Sidebar = ({ collapse }) => {
   };
 
   /* ---------------- RENDER ---------------- */
-
   return (
     <aside className="w-full h-full flex flex-col bg-[#201919] rounded-2xl overflow-auto shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
       {/* sidebar nav */}
