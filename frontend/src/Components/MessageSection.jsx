@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
 import Message from "./message";
 import axios from "axios";
@@ -7,7 +7,10 @@ import { setMessages } from "../store/chatSlice";
 
 const MessageSection = () => {
   const dispatch = useDispatch();
+
+  const containerRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const isFirstLoad = useRef(true);
 
   const { selectedConversationId, messages } = useSelector(
     (state) => state.chat,
@@ -15,59 +18,131 @@ const MessageSection = () => {
 
   const user = useSelector((state) => state.auth.user);
 
+  const [loading, setLoading] = useState(false);
+  const [showScrollBtn, setShowScrollBtn] = useState(false);
+
+  console.log("[MessageSection] Conversation:", selectedConversationId);
+  console.log("[MessageSection] Messages count:", messages.length);
+
+  // 🔥 RESET ON CHAT CHANGE
   useEffect(() => {
-    if (!selectedConversationId) return;
+    console.log("[MessageSection] Conversation changed → reset scroll state");
+    isFirstLoad.current = true;
+    setShowScrollBtn(false);
+  }, [selectedConversationId]);
 
-    const token = localStorage.getItem("token");
+  // 🔥 FETCH MESSAGES
+  useEffect(() => {
+    if (!selectedConversationId) {
+      console.log("[MessageSection] No conversation selected");
+      return;
+    }
 
-    axios
-      .get(`/api/conversations/${selectedConversationId}/messages`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
+    const fetchMessages = async () => {
+      try {
+        setLoading(true);
+
+        const token = localStorage.getItem("token");
+
+        console.log("[MessageSection] Fetching messages...");
+
+        const res = await axios.get(
+          `/api/conversations/${selectedConversationId}/messages`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        console.log(
+          "[MessageSection] Messages fetched successfully:",
+          res.data.length,
+        );
+
         dispatch(setMessages(res.data));
-      })
-      .catch((err) => console.log(err));
+      } catch (err) {
+        console.error("[MessageSection] Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
   }, [selectedConversationId, dispatch]);
 
+  // 🔥 SCROLL DETECTION
+  const handleScroll = () => {
+    const container = containerRef.current;
+    if (!container) return;
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+    const nearBottom = distanceFromBottom < 100;
+    // Only log when state changes (avoid spam)
+    if (nearBottom && showScrollBtn) {
+      console.log("[Scroll] User reached bottom");
+    }
+    if (!nearBottom && !showScrollBtn) {
+      console.log("[Scroll] User moved away from bottom");
+    }
+    setShowScrollBtn(!nearBottom);
+  };
+
+  // 🔥 AUTO SCROLL (SMART)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+    if (!messages.length) return;
+    const container = containerRef.current;
+    if (!container) return;
+    if (isFirstLoad.current) {
+      console.log("[Scroll] First load → jump to bottom");
+      messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+      isFirstLoad.current = false;
+      return;
+    }
+    const distanceFromBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight;
+    const nearBottom = distanceFromBottom < 100;
+    if (nearBottom) {
+      console.log("[Scroll] Auto scroll (user near bottom)");
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.log("[Scroll] New message but user is reading old messages");
+      setShowScrollBtn(true);
+    }
   }, [messages]);
 
   if (!selectedConversationId) return null;
 
-  // Sort messages by time
-  const sortedMessages = [...messages].sort(
-    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
-  );
+  // 🔥 SORT + GROUP
+  const groupedMessages = useMemo(() => {
+    console.log("[MessageSection] Sorting & grouping messages");
 
-  // Group messages by date
-  const groupedMessages = sortedMessages.reduce((groups, msg) => {
-    const dateKey = new Date(msg.createdAt).toDateString();
+    const sorted = [...messages].sort(
+      (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+    );
 
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
+    return sorted.reduce((groups, msg) => {
+      const key = new Date(msg.createdAt).toDateString();
 
-    groups[dateKey].push(msg);
-    return groups;
-  }, {});
+      if (!groups[key]) {
+        groups[key] = [];
+      }
 
+      groups[key].push(msg);
+      return groups;
+    }, {});
+  }, [messages]);
+
+  // 🔥 DATE FORMATTER
   const formatDateLabel = (dateString) => {
     const date = new Date(dateString);
     const today = new Date();
 
-    const isToday = date.toDateString() === today.toDateString();
-
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
 
-    const isYesterday = date.toDateString() === yesterday.toDateString();
-
-    if (isToday) return "Today";
-    if (isYesterday) return "Yesterday";
+    if (date.toDateString() === today.toDateString()) return "Today";
+    if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
 
     return date.toLocaleDateString([], {
       day: "2-digit",
@@ -77,7 +152,7 @@ const MessageSection = () => {
   };
 
   return (
-    <div className="h-full flex flex-col text-white bg-gray-700">
+    <div className="h-full flex flex-col text-white bg-gradient-to-b from-gray-700 via-gray-750 to-gray-800 relative">
       <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
         {Object.entries(groupedMessages).map(([date, msgs]) => (
           <div key={date}>

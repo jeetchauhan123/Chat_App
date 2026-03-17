@@ -144,7 +144,7 @@ const Sidebar = ({ collapse }) => {
       <header className="flex justify-between items-center px-2 shadow-md shadow-gray-700">
         {!collapse ? (
           <div className="px-4 py-4 flex items-center gap-3">
-            <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-linear-to-br from-white to-gray-200 text-amber-600 font-bold text-lg shadow">
+            <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-linear-to-br from-white to-gray-300 text-amber-600 font-bold text-lg shadow">
               {user?.name?.[0]?.toUpperCase()}
             </h1>
 
