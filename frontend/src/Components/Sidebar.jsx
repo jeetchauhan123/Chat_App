@@ -125,6 +125,13 @@ const Sidebar = ({ collapse }) => {
   };
 
   const handlelogout = () => {
+    const connection = getConnection();
+
+    if (connection) {
+      console.log("[SignalR] Stopping connection on logout");
+      connection.stop();
+    }
+
     localStorage.removeItem("token");
     dispatch(setUser(null));
     navigate("/auth");
@@ -132,155 +139,154 @@ const Sidebar = ({ collapse }) => {
 
   /* ---------------- RENDER ---------------- */
   return (
-<aside className="w-full h-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
-  {/* sidebar nav */}
-  <header className="flex justify-between items-center px-2 shadow-md shadow-gray-700">
-    {!collapse ? (
-      <div className="px-4 py-4 flex items-center gap-3">
-        <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-linear-to-br from-white to-gray-200 text-amber-600 font-bold text-lg shadow">
-          {user?.name?.[0]?.toUpperCase()}
-        </h1>
+    <aside className="w-full h-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
+      {/* sidebar nav */}
+      <header className="flex justify-between items-center px-2 shadow-md shadow-gray-700">
+        {!collapse ? (
+          <div className="px-4 py-4 flex items-center gap-3">
+            <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-linear-to-br from-white to-gray-200 text-amber-600 font-bold text-lg shadow">
+              {user?.name?.[0]?.toUpperCase()}
+            </h1>
 
-        <h1 className="text-lg font-semibold text-gray-200 tracking-wide">
-          {user?.name}
-        </h1>
-      </div>
-    ) : (
-      <div className="w-full py-4 flex items-center justify-center">
-        <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-amber-600 text-lg font-bold shadow">
-          {user?.name?.[0]?.toUpperCase()}
-        </h1>
-      </div>
-    )}
-
-    {/* menu button hamburger */}
-    {!collapse && (
-      <div className="relative" ref={menuRef}>
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="text-gray-400 hover:text-white px-4 py-4 text-xl transition cursor-pointer"
-        >
-          ☰
-        </button>
-
-        {menuOpen && (
-          <div className="absolute right-2 mt-2 w-44 bg-[#1a1a1a] border border-[#333] rounded-xl shadow-xl overflow-hidden z-50 animate-fadeIn">
-            <button
-              onClick={handlelogout}
-              className="w-full text-left px-4 py-3 hover:bg-[#2f2a2a] text-white transition"
-            >
-              🚪 Log Out
-            </button>
+            <h1 className="text-lg font-semibold text-gray-200 tracking-wide">
+              {user?.name}
+            </h1>
+          </div>
+        ) : (
+          <div className="w-full py-4 flex items-center justify-center">
+            <h1 className="w-11 h-11 flex items-center justify-center rounded-full bg-white text-amber-600 text-lg font-bold shadow">
+              {user?.name?.[0]?.toUpperCase()}
+            </h1>
           </div>
         )}
-      </div>
-    )}
-  </header>
 
-  {/* search bar */}
-  {!collapse && (
-    <div className="px-4 py-3 border-b border-[#2a2222]">
-      <input
-        type="text"
-        placeholder="Search users..."
-        value={searchTerm}
-        onChange={(e) => {
-          console.log("[Sidebar] Search input:", e.target.value);
-          setSearchTerm(e.target.value);
-        }}
-        className="w-full px-4 py-2 rounded-full bg-[#2d2424] text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-[#056224] transition"
-        // className="w-full px-4 py-2 rounded-full bg-[#2d2424] text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-amber-600 transition"
-      />
-    </div>
-  )}
-
-  {/* existing chats */}
-  <main className="flex flex-col">
-    {/* Search Results */}
-    {!collapse && searchTerm && (
-      <div>
-        {searchResults.length > 0 ? (
-          searchResults.map((u) => (
-            <div
-              key={u.userId}
-              onClick={() => onSearchClick(u)}
-              className="px-5 py-3 hover:bg-[#2f2a2a] cursor-pointer text-white transition"
+        {/* menu button hamburger */}
+        {!collapse && (
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="text-gray-400 hover:text-white px-4 py-4 text-xl transition cursor-pointer"
             >
-              {u.name}
-            </div>
-          ))
-        ) : (
-          <div className="px-5 py-3 text-gray-400">No User Found</div>
+              ☰
+            </button>
+
+            {menuOpen && (
+              <div className="absolute right-2 mt-2 w-44 bg-[#1a1a1a] border border-[#333] rounded-xl shadow-xl overflow-hidden z-50 animate-fadeIn">
+                <button
+                  onClick={handlelogout}
+                  className="w-full text-left px-4 py-3 hover:bg-[#2f2a2a] text-white transition"
+                >
+                  🚪 Log Out
+                </button>
+              </div>
+            )}
+          </div>
         )}
-        <hr className="text-[#575454] mx-4" />
-      </div>
-    )}
+      </header>
 
-    {/* Chats */}
-    {conversations.length === 0 ? (
-      <div className="text-gray-400 p-6 text-center">
-        Start having conversations with people you know. 👋
-      </div>
-    ) : (
-      conversations.map((c) => (
-        <section
-          key={c.conversationId}
-          className="w-full flex flex-col items-center"
-          onClick={() => {
-            console.log(
-              "[Sidebar] Conversation selected:",
-              c.conversationId,
-            );
-            dispatch(setSelectedConversationId(c.conversationId));
-            dispatch(
-              setSelectedUser({
-                userId: c.otherUser?.userId,
-                name: c.otherUser?.name,
-              }),
-            );
-          }}
-        >
-          {/* open sidebar chat */}
-          {!collapse ? (
-            <div className="w-full px-4 py-3 flex items-center gap-4 rounded-xl cursor-pointer hover:bg-[#2f2a2a] transition">
-              <div className="w-10">
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold shadow">
-                  {c.otherUser?.name?.[0]?.toUpperCase()}
+      {/* search bar */}
+      {!collapse && (
+        <div className="px-4 py-3 border-b border-[#2a2222]">
+          <input
+            type="text"
+            placeholder="Search users..."
+            value={searchTerm}
+            onChange={(e) => {
+              console.log("[Sidebar] Search input:", e.target.value);
+              setSearchTerm(e.target.value);
+            }}
+            className="w-full px-4 py-2 rounded-full bg-[#2d2424] text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-amber-600 transition"
+          />
+        </div>
+      )}
+
+      {/* existing chats */}
+      <main className="flex flex-col">
+        {/* Search Results */}
+        {!collapse && searchTerm && (
+          <div>
+            {searchResults.length > 0 ? (
+              searchResults.map((u) => (
+                <div
+                  key={u.userId}
+                  onClick={() => onSearchClick(u)}
+                  className="px-5 py-3 hover:bg-[#2f2a2a] cursor-pointer text-white transition"
+                >
+                  {u.name}
                 </div>
-              </div>
+              ))
+            ) : (
+              <div className="px-5 py-3 text-gray-400">No User Found</div>
+            )}
+            <hr className="text-[#575454] mx-4" />
+          </div>
+        )}
 
-              <div className="w-full flex flex-col">
-                <div className="flex justify-between items-center text-white">
-                  <span className="text-base font-semibold">
-                    {c.otherUser?.name || "Unknown User"}
-                  </span>
+        {/* Chats */}
+        {conversations.length === 0 ? (
+          <div className="text-gray-400 p-6 text-center">
+            Start having conversations with people you know. 👋
+          </div>
+        ) : (
+          conversations.map((c) => (
+            <section
+              key={c.conversationId}
+              className="w-full flex flex-col items-center"
+              onClick={() => {
+                console.log(
+                  "[Sidebar] Conversation selected:",
+                  c.conversationId,
+                );
+                dispatch(setSelectedConversationId(c.conversationId));
+                dispatch(
+                  setSelectedUser({
+                    userId: c.otherUser?.userId,
+                    name: c.otherUser?.name,
+                  }),
+                );
+              }}
+            >
+              {/* open sidebar chat */}
+              {!collapse ? (
+                <div className="w-full px-4 py-3 flex items-center gap-4 rounded-xl cursor-pointer hover:bg-[#2f2a2a] transition">
+                  <div className="w-10">
+                    <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold shadow">
+                      {c.otherUser?.name?.[0]?.toUpperCase()}
+                    </div>
+                  </div>
 
-                  <span className="text-[#9e9e9e] text-xs">
-                    {new Date(c.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
+                  <div className="w-full flex flex-col">
+                    <div className="flex justify-between items-center text-white">
+                      <span className="text-base font-semibold">
+                        {c.otherUser?.name || "Unknown User"}
+                      </span>
+
+                      <span className="text-[#9e9e9e] text-xs">
+                        {new Date(c.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </div>
+
+                    <p className="truncate text-[#9e9e9e] text-sm">
+                      {c.lastMessage || "No messages yet"}
+                    </p>
+                  </div>
                 </div>
-
-                <p className="truncate text-[#9e9e9e] text-sm">
-                  {c.lastMessage || "No messages yet"}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="w-full flex items-center justify-center my-3">
-              <h1 className="w-11 h-11  flex items-center justify-center cursor-pointer rounded-full bg-white text-amber-600 font-bold transition hover:scale-110 hover:shadow-[0_0_15px_#888]">
-                {c.otherUser?.name?.[0]?.toUpperCase()}
-              </h1>
-            </div>
-          )}
-          {!collapse && <hr className="text-[#3a3333] w-[85%]" />}
-        </section>
-      ))
-    )}
-  </main>
-</aside>
+              ) : (
+                <div className="w-full flex items-center justify-center my-3">
+                  <h1 className="w-11 h-11  flex items-center justify-center cursor-pointer rounded-full bg-white text-amber-600 font-bold transition hover:scale-110 hover:shadow-[0_0_15px_#888]">
+                    {c.otherUser?.name?.[0]?.toUpperCase()}
+                  </h1>
+                </div>
+              )}
+              {!collapse && <hr className="text-[#3a3333] w-[85%]" />}
+            </section>
+          ))
+        )}
+      </main>
+    </aside>
   );
 };
 

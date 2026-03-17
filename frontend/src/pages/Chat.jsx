@@ -13,23 +13,80 @@ const Chat = () => {
   console.log(user);
 
   useEffect(() => {
-    if (!user) return;
+    console.log("[Chat] Layout mounted");
+    return () => console.log("[Chat] Layout unmounted");
+  }, []); 
 
-    const token = localStorage.getItem("token");
+  useEffect(() => {
+    const handleResize = () => {
+      console.log("[Chat] Window resized:", window.innerWidth);
+    };
 
-    startSignalRConnection(token)
-      .then(() => {
-        const connection = getConnection();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    console.log("[Chat] useEffect triggered");
+
+    if (!user) {
+      console.log("[Chat] No user, skipping SignalR setup");
+      return;
+    }
+
+    let connection;
+
+    const setup = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        console.log("[SignalR] Token:", token ? "Exists" : "Missing");
+
+        console.log("[SignalR] Starting connection...");
+        await startSignalRConnection(token);
+
+        connection = getConnection();
+
+        console.log("[SignalR] Connection object:", connection);
+
+        if (!connection) {
+          console.error("[SignalR] Connection is null!");
+          return;
+        }
+
+        console.log("[SignalR] Removing old listener (if any)");
+        connection.off("ReceiveMessage");
+
+        console.log("[SignalR] Adding ReceiveMessage listener");
 
         connection.on("ReceiveMessage", (message) => {
-          console.log("Message received from SignalR:", message);
+          console.log("[SignalR] Message received:", message);
+
+          if (!message) {
+            console.warn("[SignalR] Empty message received");
+            return;
+          }
+
           dispatch(addMessage(message));
         });
 
-        console.log("SignalR Connected");
-      })
-      .catch((err) => console.log("SignalR Error:", err));
-  }, [user]);
+        console.log("[SignalR] Listener attached successfully");
+      } catch (err) {
+        console.error("[SignalR] Setup error:", err);
+      }
+    };
+
+    setup();
+
+    return () => {
+      console.log("[Chat] Cleanup triggered");
+
+      if (connection) {
+        console.log("[SignalR] Removing listener on cleanup");
+        connection.off("ReceiveMessage");
+      }
+    };
+  }, [user, dispatch]);
 
   if (loading)
     return (
@@ -50,14 +107,16 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="h-screen p-5 overflow-hidden relative flex flex-row gap-6">
+    <section className="h-screen p-5 overflow-hidden relative flex gap-6 backdrop-blur-md">
       <img
         src="/chat_bg4.jpg"
         alt="bg_img"
         className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
       />
-      <div className={`${collapse ? "w-[5%]":"w-[25%]"} relative transition-all`}>
-      {/* <div className={`w-[25%] relative transition-all`}> */}
+      <div
+        className={`${collapse ? "w-[5%]" : "w-[25%]"} relative transition-all duration-300 ease-in-out`}
+      >
+        {/* <div className={`w-[25%] relative transition-all`}> */}
         <div
           className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl"
           onClick={() => setCollapse(!collapse)}
