@@ -151,15 +151,45 @@ const MessageSection = () => {
     });
   };
 
-  return (
-    <div className="h-full flex flex-col text-white bg-gradient-to-b from-gray-700 via-gray-750 to-gray-800 relative">
-      <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-        {Object.entries(groupedMessages).map(([date, msgs]) => (
-          <div key={date}>
-            <div className="text-center text-xs text-gray-400 my-4 font-medium">
-              {formatDateLabel(date)}
-            </div>
+return (
+  <div className="h-full flex flex-col text-white bg-linear-to-b from-gray-700 via-gray-800 to-gray-900 relative">
+    {/* 🔥 RADIAL LIGHT EFFECT (TOP GLOW) */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-75 bg-teal-500/10 blur-3xl pointer-events-none" />
 
+    {/* 🔥 SUBTLE OVERLAY (DEPTH) */}
+    <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+
+    {/* 🔥 MESSAGE AREA */}
+    <div
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="flex-1 overflow-y-auto p-6 space-y-3 custom-scrollbar relative z-10"
+    >
+      {/* LOADING */}
+      {loading && (
+        <p className="text-center text-gray-400 animate-pulse">
+          Loading messages...
+        </p>
+      )}
+
+      {/* EMPTY */}
+      {!loading && messages.length === 0 && (
+        <p className="text-center text-gray-400">No messages yet</p>
+      )}
+
+      {/* MESSAGE */}
+      {/* <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar"> */}
+      {Object.entries(groupedMessages).map(([date, msgs]) => (
+        <div key={date} className="space-y-1">
+          {/* DATE LABEL */}
+        <div className="sticky top-2 z-20 flex justify-center">
+          <span className="px-4 py-1.5 text-xs tracking-wide bg-gray-800/70 backdrop-blur-md border border-white/10 text-gray-300 rounded-full shadow-lg">
+            {formatDateLabel(date)}
+          </span>
+          </div>
+
+          {/* 🔥 MESSAGE STACK */}
+          <div className="space-y-2">
             {msgs.map((msg) => (
               <Message
                 key={msg.messageId}
@@ -172,15 +202,36 @@ const MessageSection = () => {
               />
             ))}
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="shrink-0">
-        <ChatInput />
-      </div>
+        </div>
+      ))}
+      <div ref={messagesEndRef} />
+      {/* </div> */}
     </div>
-  );
+
+    {/* 🔥 SCROLL BUTTON */}
+    {showScrollBtn && (
+      <div className="absolute bottom-24 right-6 z-20">
+        <button
+          onClick={() => {
+            console.log("[Scroll] Manual scroll to bottom clicked");
+
+            messagesEndRef.current?.scrollIntoView({
+              behavior: "smooth"
+            });
+          }}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-teal-600/90 backdrop-blur-md hover:bg-teal-500 text-sm font-medium shadow-xl shadow-teal-900/30 border border-white/10 transition-all duration-200 "
+        >
+          ↓ New Messages
+        </button>
+      </div>
+    )}
+    
+    {/* 🔥 INPUT */}
+    <div className="shrink-0 border-t border-white/10 bg-[#2f2f2f]/80 backdrop-blur-lg z-30">
+      <ChatInput />
+    </div>
+  </div>
+);
 };
 
 export default MessageSection;
