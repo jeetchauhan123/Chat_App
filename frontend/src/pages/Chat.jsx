@@ -15,7 +15,7 @@ const Chat = () => {
   useEffect(() => {
     console.log("[Chat] Layout mounted");
     return () => console.log("[Chat] Layout unmounted");
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -107,18 +107,21 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="h-screen p-5 overflow-hidden relative flex gap-6 backdrop-blur-md">
+    <section className="w-full h-screen p-5 overflow-hidden relative flex gap-6 backdrop-blur-md">
       <img
         src="/chat_bg4.jpg"
         alt="bg_img"
         className="absolute top-0 left-0 w-full h-screen object-cover -z-10"
       />
+
+      {/* Sidebar */}
       <div
-        className={`${collapse ? "w-[5%]" : "w-[25%]"} relative transition-all duration-300 ease-in-out`}
+        className={`${
+          collapse ? "flex-[0_0_5%]" : "flex-[0_0_20%]"
+        }  min-w-0 relative transition-all duration-300 ease-in-out`}
       >
-        {/* <div className={`w-[25%] relative transition-all`}> */}
         <div
-          className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl"
+          className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl z-10 cursor-pointer"
           onClick={() => setCollapse(!collapse)}
         >
           <img
@@ -129,7 +132,9 @@ const Chat = () => {
         </div>
         <Sidebar collapse={collapse} />
       </div>
-      <ChatPanel user={user} />
+
+      {/* Chat Panel */}
+        <ChatPanel className="flex-1 min-w-0 overflow-hidden"/>
     </section>
   );
 };

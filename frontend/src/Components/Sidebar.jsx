@@ -8,6 +8,7 @@ import {
   setSelectedUser,
   setSelectedConversationId,
 } from "../store/chatSlice";
+import { getConnection } from "../signalr";
 
 const Sidebar = ({ collapse }) => {
   const dispatch = useDispatch();
@@ -139,7 +140,7 @@ const Sidebar = ({ collapse }) => {
 
   /* ---------------- RENDER ---------------- */
   return (
-    <aside className="w-full h-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
+    <aside className="w-full h-full max-w-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
       {/* sidebar nav */}
       <header className="flex justify-between items-center px-2 shadow-md shadow-gray-700">
         {!collapse ? (
@@ -248,14 +249,14 @@ const Sidebar = ({ collapse }) => {
             >
               {/* open sidebar chat */}
               {!collapse ? (
-                <div className="w-full px-4 py-3 flex items-center gap-4 rounded-xl cursor-pointer hover:bg-[#2f2a2a] transition">
+                <div className="w-full px-4 py-3 flex items-center gap-4 rounded-xl cursor-pointer hover:bg-[#2f2a2a] transition min-w-0">
                   <div className="w-10">
                     <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white text-amber-600 font-bold shadow">
                       {c.otherUser?.name?.[0]?.toUpperCase()}
                     </div>
                   </div>
 
-                  <div className="w-full flex flex-col">
+                  <div className="w-full flex flex-col overflow-hidden min-w-0">
                     <div className="flex justify-between items-center text-white">
                       <span className="text-base font-semibold">
                         {c.otherUser?.name || "Unknown User"}
@@ -269,7 +270,7 @@ const Sidebar = ({ collapse }) => {
                       </span>
                     </div>
 
-                    <p className="truncate text-[#9e9e9e] text-sm">
+                    <p className="text-[#9e9e9e] text-sm truncate">
                       {c.lastMessage || "No messages yet"}
                     </p>
                   </div>
