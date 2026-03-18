@@ -180,7 +180,7 @@ return (
       {/* MESSAGE */}
       {/* <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar"> */}
       {Object.entries(groupedMessages).map(([date, msgs]) => (
-        <div key={date} className="space-y-1">
+        <div key={date} className="space-y-3">
           {/* DATE LABEL */}
         <div className="sticky top-2 z-20 flex justify-center">
           <span className="px-4 py-1.5 text-xs tracking-wide bg-gray-800/70 backdrop-blur-md border border-white/10 text-gray-300 rounded-full shadow-lg">
