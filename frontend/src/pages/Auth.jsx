@@ -79,7 +79,8 @@ const Auth = () => {
 
   return (
     <section className="w-screen h-screen bg-amber-50 flex flex-row justify-center items-center gap-44 relative">
-      <p className="absolute text-4xl top-5 left-6">ChatApp</p>
+      {/* <p className="absolute text-4xl top-5 left-6">ChatApp</p> */}
+      <img src="/logo.png" alt="logo" className="w-30 h-30 absolute text-4xl top-5 left-10" />
 
       {/* left section */}
       <div className="relative w-110 h-100 rounded-3xl overflow-hidden">
