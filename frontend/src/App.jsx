@@ -8,6 +8,9 @@ import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
+
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -20,7 +23,7 @@ function App() {
     }
 
     axios
-      .get("https://localhost:7028/api/users/me", {
+      .get(`${API}/api/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

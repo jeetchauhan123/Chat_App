@@ -7,9 +7,12 @@ const Auth = () => {
   const [otpPage, setOtpPage] = useState(false);
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
+  const [testerMode, setTesterMode] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const API = import.meta.env.VITE_API_URL;
 
   const EmailBtnClick = async () => {
     if (!isValidEmail(email)) {
@@ -17,16 +20,30 @@ const Auth = () => {
       return;
     }
     try {
-      const response = await fetch("/api/users/generate-otp", {
+      const response = await fetch(`${API}/api/users/generate-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email }),
+        body: JSON.stringify({
+          email: email,
+          testerMode: testerMode, // ✅ IMPORTANT
+        }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to generate OTP");
+      }
+      const data = await response.json(); // ✅ NEW
+
+      // ✅ If tester mode → show OTP
+      if (testerMode) {
+        if (data?.otp) {
+          alert(`Your OTP is ${data.otp}`);
+          setOtp(data.otp);
+        } else {
+          alert("Tester mode enabled, but no OTP received from server");
+        }
       }
 
       setOtpPage(true);
@@ -43,7 +60,7 @@ const Auth = () => {
     }
 
     try {
-      const response = await fetch("/api/users/verify-otp", {
+      const response = await fetch(`${API}/api/users/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +97,11 @@ const Auth = () => {
   return (
     <section className="w-screen h-screen bg-amber-50 flex flex-row justify-center items-center gap-44 relative">
       {/* <p className="absolute text-4xl top-5 left-6">ChatApp</p> */}
-      <img src="/logo.png" alt="logo" className="w-30 h-30 absolute text-4xl top-5 left-10" />
+      <img
+        src="/logo.png"
+        alt="logo"
+        className="w-30 h-30 absolute text-4xl top-5 left-10"
+      />
 
       {/* left section */}
       <div className="relative w-110 h-100 rounded-3xl overflow-hidden">
@@ -164,7 +185,7 @@ const Auth = () => {
               <h2 className="text-5xl font-normal">Welcome</h2>
               <p className="text-3xl">Enter Your Email</p>
             </section>
-            <section className="flex flex-col gap-5">
+            <section className="w-2/3 flex flex-col items-center gap-5">
               <input
                 type="email"
                 name="email"
@@ -172,12 +193,30 @@ const Auth = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-100 w-70 h-10 rounded-full text-center border"
               />
+
+              {/* ✅ TESTER MODE TOGGLE */}
+              <div className="flex items-center gap-2 justify-center">
+                <input
+                  type="checkbox"
+                  checked={testerMode}
+                  onChange={() => setTesterMode(!testerMode)}
+                  className="cursor-pointer"
+                />
+                <label className="text-sm text-gray-600 cursor-pointer">
+                  Tester Mode (otp in console)
+                </label>
+              </div>
+
               <button
                 className="bg-amber-100 w-70 h-10 mb-2 rounded-full text-lg cursor-pointer"
                 onClick={() => EmailBtnClick()}
               >
                 Next
               </button>
+              <p className=" text-xs text-gray-400 text-center wrap-break-word">
+                Turn on Tester Mode to instantly access OTP without personal
+                email
+              </p>
             </section>
           </div>
         )}

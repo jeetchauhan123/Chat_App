@@ -17,6 +17,8 @@ const Sidebar = ({ collapse }) => {
 
   const menuRef = useRef(null);
 
+  const API = import.meta.env.VITE_API_URL;
+
   const user = useSelector((state) => state.auth.user);
   const conversations = useSelector((state) => state.chat.conversations);
 
@@ -51,7 +53,7 @@ const Sidebar = ({ collapse }) => {
 
       try {
         const res = await axios.get(
-          `/api/sidebar/conversations/${user.userId}`,
+          `${API}/api/sidebar/conversations/${user.userId}`,
         );
 
         console.log("[Sidebar] Conversations received:", res.data);
@@ -77,7 +79,9 @@ const Sidebar = ({ collapse }) => {
       try {
         console.log("[Sidebar] Searching users...");
 
-        const res = await axios.get(`/api/users/search?query=${searchTerm}`);
+        const res = await axios.get(
+          `${API}/api/users/search?query=${searchTerm}`,
+        );
 
         console.log("[Sidebar] Search results:", res.data);
 
@@ -105,7 +109,7 @@ const Sidebar = ({ collapse }) => {
       );
 
       const res = await axios.post(
-        "/api/conversations/private",
+        `${API}/api/conversations/private`,
         {
           user1Id: user.userId,
           user2Id: selectedUser.userId,

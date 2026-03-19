@@ -21,6 +21,9 @@ const MessageSection = () => {
   const [loading, setLoading] = useState(false);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL;
+
+
   console.log("[MessageSection] Conversation:", selectedConversationId);
   console.log("[MessageSection] Messages count:", messages.length);
 
@@ -47,7 +50,7 @@ const MessageSection = () => {
         console.log("[MessageSection] Fetching messages...");
 
         const res = await axios.get(
-          `/api/conversations/${selectedConversationId}/messages`,
+          `${API}/api/conversations/${selectedConversationId}/messages`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

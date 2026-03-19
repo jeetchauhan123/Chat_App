@@ -29,6 +29,7 @@ namespace ChatApp.API.Controllers
         public IActionResult GenerateOtp([FromBody] EmailRequest request)
         {
             var email = request.Email;
+            var testerMode = request.TesterMode; // ✅ NEW
 
             var random = new Random();
             var otp = random.Next(1000, 9999).ToString();
@@ -37,7 +38,21 @@ namespace ChatApp.API.Controllers
 
             Console.WriteLine($"OTP for {email} is: {otp}");
 
-            return Ok(new { message = "OTP generated" });
+            // ✅ If tester mode → return OTP in response
+            if (testerMode)
+            {
+                return Ok(new
+                {
+                    message = "OTP generated (tester mode)",
+                    otp = otp
+                });
+            }
+
+            // ✅ Normal mode → DO NOT expose OTP
+            return Ok(new
+            {
+                message = "OTP sent to email"
+            });
         }
 
         // STEP 2: Verify OTP and Login/Register
@@ -143,5 +158,6 @@ namespace ChatApp.API.Controllers
     public class EmailRequest
     {
         public string Email { get; set; }
+        public bool TesterMode { get; set; } = false; // ✅ NEW
     }
 }

@@ -3,6 +3,9 @@ import * as signalR from "@microsoft/signalr";
 let connection = null;
 
 export const startSignalRConnection = async (token) => {
+
+  const API = import.meta.env.VITE_API_URL;
+
   if (connection) {
     console.log("[SignalR] Connection already exists");
     return;
@@ -11,7 +14,7 @@ export const startSignalRConnection = async (token) => {
   console.log("[SignalR] Creating new connection...");
 
   connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7028/chatHub", {
+    .withUrl(`${API}/chatHub`, {
       accessTokenFactory: () => token,
     })
     .withAutomaticReconnect()

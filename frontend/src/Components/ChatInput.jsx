@@ -22,7 +22,7 @@ const ChatInput = () => {
       console.log("[ChatInput] Sending message:", text);
 
       const res = await axios.post(
-        `/api/conversations/${selectedConversationId}/send`,
+        `${API}/api/conversations/${selectedConversationId}/send`,
         {
           senderId: user.userId,
           content: text,
