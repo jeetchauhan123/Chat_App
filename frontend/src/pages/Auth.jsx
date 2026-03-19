@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/authSlice";
 
 const Auth = () => {
@@ -9,10 +9,18 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [testerMode, setTesterMode] = useState(false);
 
+  const { user } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const API = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   const EmailBtnClick = async () => {
     if (!isValidEmail(email)) {

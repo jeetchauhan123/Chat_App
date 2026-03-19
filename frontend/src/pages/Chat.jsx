@@ -101,10 +101,6 @@ const Chat = () => {
       </div>
     );
 
-  if (!user) {
-    return <p className="p-5">User not found</p>;
-  }
-
   console.log("chat", user);
   return (
     <section className="w-full h-screen p-5 overflow-hidden relative flex gap-6 backdrop-blur-md">
@@ -134,7 +130,7 @@ const Chat = () => {
       </div>
 
       {/* Chat Panel */}
-        <ChatPanel className="flex-1 min-w-0 overflow-hidden"/>
+      <ChatPanel className="flex-1 min-w-0 overflow-hidden" />
     </section>
   );
 };
