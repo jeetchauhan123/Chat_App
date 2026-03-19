@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173") // ✅ FRONTEND URL<-------------------------
+            policy.WithOrigins("https://chat-app-rho-two-74.vercel.app") // ✅ FRONTEND URL<-------------------------
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials(); // VERY IMPORTANT
@@ -30,9 +30,9 @@ builder.Services.AddCors(options =>
         });
 });
 
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
 
-
-var key = Encoding.UTF8.GetBytes("THIS_IS_MY_SUPER_SECRET_KEY_1234567890123456");
+var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(options =>
 {
