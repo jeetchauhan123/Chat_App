@@ -15,13 +15,15 @@ namespace ChatApp.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IConfiguration _config;
 
         // Temporary OTP storage (in-memory)
         private static Dictionary<string, string> _otpStorage = new();
 
-        public UsersController(AppDbContext context)
+        public UsersController(AppDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         // STEP 1: Generate OTP
@@ -91,8 +93,15 @@ namespace ChatApp.API.Controllers
 
 
             // ===== JWT PART =====
+            var jwtKey = _config["JWT_KEY"];
+
+            if (string.IsNullOrEmpty(jwtKey))
+            {
+                throw new Exception("JWT_KEY is missing");
+            }
+
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("THIS_IS_MY_SUPER_SECRET_KEY_1234567890123456")
+                Encoding.UTF8.GetBytes(jwtKey)
             );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

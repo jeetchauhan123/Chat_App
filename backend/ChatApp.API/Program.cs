@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
@@ -22,15 +23,23 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://chat-app-rho-two-74.vercel.app") // ✅ FRONTEND URL<-------------------------
+            policy.WithOrigins(
+                "https://chat-app-rho-two-74.vercel.app", 
+                "http://localhost:5173"
+                )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials(); // VERY IMPORTANT
+                  .AllowCredentials();
 
         });
 });
 
-var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+var jwtKey = builder.Configuration["JWT_KEY"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception("JWT_KEY is missing in configuration");
+}
 
 var key = Encoding.UTF8.GetBytes(jwtKey);
 
@@ -83,11 +92,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    db.Database.Migrate();
+//}
+
 app.UseHttpsRedirection();
 
-app.UseCors("AllowFrontend");   // ✅ Now it's correct
+app.UseCors("AllowFrontend");   
 
-app.UseAuthentication();   // ✅ ADD THIS
+app.UseAuthentication();   
 
 app.UseAuthorization();
 

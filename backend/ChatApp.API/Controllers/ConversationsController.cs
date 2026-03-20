@@ -122,8 +122,11 @@ namespace ChatApp.API.Controllers
 
             // update last_message_id
             var conversation = await _context.Conversations.FindAsync(conversationId);
-            conversation.LastMessageId = message.MessageId;
-            await _context.SaveChangesAsync();
+            if (conversation != null)
+            {
+                conversation.LastMessageId = message.MessageId;
+                await _context.SaveChangesAsync();
+            }
 
             // 🔥 GET RECEIVER ID
             var receiverId = await _context.ConversationMembers
