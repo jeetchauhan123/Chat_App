@@ -91,11 +91,8 @@ builder.Services.AddSignalR();
 var app = builder.Build();   // ✅ app created here
 
 // Configure pipeline
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
