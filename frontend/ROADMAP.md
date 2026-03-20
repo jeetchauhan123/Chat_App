@@ -214,7 +214,7 @@ This document tracks the architectural progression and feature maturity of the C
 - [x] Store jwt token
 - [x] Persist token in local storage
 - [x] Rehydrate auth state on refresh
-- [ ] Implement logout cleanup logic
+- [x] Implement logout cleanup logic
 
 ## Chat State
 
@@ -239,9 +239,9 @@ This document tracks the architectural progression and feature maturity of the C
 
 ## User Controls
 
-- [ ] Add logout button
-- [ ] Hide/show sidebar toggle
-- [ ] Implement close chat button
+- [x] Add logout button
+- [x] Hide/show sidebar toggle
+- [x] Implement close chat button
 - [ ] Personal data update section
 - [ ] Update status message feature
 - [ ] Profile editing modal
@@ -259,11 +259,19 @@ This document tracks the architectural progression and feature maturity of the C
 
 ## Security Improvements
 
-- [ ] Move jwt secret to appsettings.json
+- [x] Move jwt secret to appsettings.json
 - [ ] Implement refresh token flow
 
 ## Infrastructure
 
 - [ ] Add structured logging (Serilog)
-- [ ] Add docker support
-- [ ] Deploy to cloud (Azure / Railway / Render)
+- [x] Add docker support
+- [x] Deploy to cloud (Frontend - Vercel / Backend - Render)
+
+
+BUGS - 
+1. Loading screen when logs in auth -> chat page
+2. Automatically generate chat in sidebar when new chat is created 
+3. When a message new message comes highlight in sidebar
+4. New message is displayed in current open chat weather it came from the same person or any other person
+5. Personal chat and some other chat gets linked in display as they show same message no matter from where the message was sent
