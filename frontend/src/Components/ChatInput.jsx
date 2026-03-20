@@ -10,6 +10,8 @@ const ChatInput = () => {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { selectedConversationId } = useSelector((state) => state.chat);
   const user = useSelector((state) => state.auth.user);
 
