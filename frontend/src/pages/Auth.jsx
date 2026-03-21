@@ -103,12 +103,12 @@ const Auth = () => {
   };
 
   return (
-    <section className="w-screen h-screen p-6 bg-amber-50 flex flex-col md:flex-row justify-center items-center gap-10 md:gap-24 lg:gap-28 xl:gap-44 relative">
+    <section className="w-screen h-screen p-6 bg-amber-50 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-20 lg:gap-28 xl:gap-44 relative">
       {/* <p className="absolute text-4xl top-5 left-6">ChatApp</p> */}
       <img
         src="/logo.png"
         alt="logo"
-        className="w-30 h-30 absolute text-4xl top-5 left-10"
+        className="w-20 md:w-30 h-20 md:h-30 absolute text-4xl top-3 md:top-5 left-8 md:left-10"
       />
 
       {/* left section */}
@@ -148,9 +148,9 @@ const Auth = () => {
       </div>
 
       {/* right section */}
-      <div className="flex flex-col justify-center items-center gap-4">
+      <div className="w-[90%] sm:w-fit flex flex-col justify-center items-center gap-2 md:gap-4">
         {/* caption area */}
-        <div className="bg-white w-90 md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-7 md:py-8 lg:py-9 xl:py-10 flex justify-center items-center gap-2 rounded-3xl border">
+        <div className="bg-white w-full md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-5 md:py-6 lg:py-8 xl:py-10 flex justify-center items-center gap-2 rounded-3xl border">
           <img src="/lock.svg" alt="" className="w-6 md:w-7 lg:w-8 h-6 md:h-7 lg:h-8" />
           <p className="text-sm md:text-base lg:text-lg">
             Your messages are Safe and protected with us
@@ -188,12 +188,13 @@ const Auth = () => {
           </div>
         ) : (
           // 1- email page
-          <div className="bg-white w-90 md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-7 md:py-8 lg:py-9 xl:py-10 flex flex-col items-center gap-5.5 md:gap-7 lg:gap-8.5 xl:gap-10 rounded-3xl border">
-            <section className="flex flex-col items-center gap-3">
+          <div className="bg-white w-full md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-4 sm:py-5 md:py-8 lg:py-9 xl:py-10 flex flex-col items-center gap-4
+           md:gap-6 lg:gap-8 xl:gap-10 rounded-3xl border">
+            <section className="flex flex-col items-center gap-1 md:gap-3">
               <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">Welcome</h2>
               <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl">Enter Your Email</p>
             </section>
-            <section className="w-2/3 flex flex-col items-center gap-5">
+            <section className="w-full sm:w-2/3 flex flex-col items-center gap-3 md:gap-5">
               <input
                 type="email"
                 name="email"
@@ -210,18 +211,18 @@ const Auth = () => {
                   onChange={() => setTesterMode(!testerMode)}
                   className="cursor-pointer"
                 />
-                <label className="text-sm text-gray-600 cursor-pointer">
+                <label className="text-xs sm:text-sm text-gray-600 cursor-pointer">
                   Tester Mode (otp in console)
                 </label>
               </div>
 
               <button
-                className="bg-amber-100 w-70 h-10 mb-2 rounded-full text-lg cursor-pointer"
+                className="bg-amber-100 w-40 md:w-50 lg:w-60 xl:w-70 h-8 md:h-10 mb-2 rounded-full text-base md:text-lg cursor-pointer"
                 onClick={() => EmailBtnClick()}
               >
                 Next
               </button>
-              <p className=" text-xs text-gray-400 text-center wrap-break-word">
+              <p className="text-[0.625rem] md:text-xs text-gray-400 text-center wrap-break-word">
                 Turn on Tester Mode to instantly access OTP without personal
                 email
               </p>
@@ -229,7 +230,7 @@ const Auth = () => {
           </div>
         )}
 
-        <p className="text-sm text-gray-500 text-center">
+        <p className="text-xs md:text-sm text-gray-500 text-center">
           <a href="" className="hover:underline">
             Terms and Conditions
           </a>
