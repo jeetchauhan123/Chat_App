@@ -99,8 +99,10 @@ var app = builder.Build();   // ✅ app created here
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend");   
 

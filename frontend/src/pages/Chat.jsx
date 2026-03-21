@@ -8,6 +8,8 @@ import { addMessage } from "../store/chatSlice";
 
 const Chat = () => {
   const [collapse, setCollapse] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const dispatch = useDispatch();
   const { user, loading } = useSelector((state) => state.auth);
   console.log(user);
@@ -20,6 +22,15 @@ const Chat = () => {
   useEffect(() => {
     const handleResize = () => {
       console.log("[Chat] Window resized:", window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
@@ -103,7 +114,7 @@ const Chat = () => {
 
   console.log("chat", user);
   return (
-    <section className="w-full h-screen p-5 overflow-hidden relative flex gap-6 backdrop-blur-md">
+    <section className="w-full h-screen p-4 overflow-hidden relative flex gap-6 backdrop-blur-md">
       <img
         src="/chat_bg4.jpg"
         alt="bg_img"
@@ -112,12 +123,27 @@ const Chat = () => {
 
       {/* Sidebar */}
       <div
-        className={`${
-          collapse ? "flex-[0_0_5%]" : "flex-[0_0_20%]"
-        }  min-w-0 relative transition-all duration-300 ease-in-out`}
+        className={`
+          ${isMobile ? "fixed top-0 left-0 h-full z-50" : "relative"}
+          
+          ${
+            isMobile
+              ? collapse
+                ? "-translate-x-[96%] shadow-none" // almost hidden (only 5% visible)
+                : "translate-x-0"
+              : collapse
+                ? "flex-[0_0_70px]"
+                : "flex-[0_0_240px] md:flex-[0_0_260px] lg:flex-[0_0_300px]"
+          }
+
+          ${isMobile ? "w-[75%]" : "min-w-[20px] md:min-w-[20px]"}
+          transition-all duration-500 ease-[cubic-bezier(0.68,-0.55,0.27,1.55)] shadow-[0_0_50px_-20px] shadow-[#f5deb3c3] rounded-2xl
+        `}
       >
         <div
-          className="top-5 -right-5 w-5 h-10 flex items-center absolute bg-[#201919] rounded-tr-xl rounded-br-xl z-10 cursor-pointer"
+          className={`absolute top-5 ${
+            isMobile ? "right-[-20px]" : "-right-5"
+          } w-6 h-12 flex items-center justify-center bg-[#201919] rounded-r-xl z-50 cursor-pointer`}
           onClick={() => setCollapse(!collapse)}
         >
           <img
@@ -130,7 +156,19 @@ const Chat = () => {
       </div>
 
       {/* Chat Panel */}
-      <ChatPanel className="flex-1 min-w-0 overflow-hidden" />
+      <div
+        className={`
+          flex-1 min-w-0 overflow-hidden shadow-[0_0_40px_-20px_#f5deb3c3]
+          
+          ${isMobile && !collapse ? "blur-sm" : ""}
+          
+          ${isMobile && collapse ? "ml-[14px]" : ""}
+          
+          transition-all duration-300 rounded-3xl
+        `}
+      >
+        <ChatPanel />
+      </div>
     </section>
   );
 };

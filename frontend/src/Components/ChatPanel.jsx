@@ -21,7 +21,7 @@ const ChatPanel = () => {
   }
 
   return (
-    <div className="w-full h-full min-w-0 flex flex-col bg-[#2a2a2a] rounded-3xl overflow-hidden border relative border-[#3a3a3a] shadow-[0_0_40px_-20px_#f5deb3c3]">
+    <div className="w-full h-full min-w-0 flex flex-col bg-[#2a2a2a]  overflow-hidden border relative border-[#3a3a3a] ">
 
       {/* Top Nav */}
       <ChatNav />	

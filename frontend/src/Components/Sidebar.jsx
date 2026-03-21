@@ -144,7 +144,7 @@ const Sidebar = ({ collapse }) => {
 
   /* ---------------- RENDER ---------------- */
   return (
-    <aside className="w-full h-full max-w-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_50px_-20px] shadow-[#f5deb3c3]">
+    <aside className="w-full h-full max-w-full flex flex-col bg-[#201919]/95 backdrop-blur-md rounded-2xl overflow-hidden ">
       {/* sidebar nav */}
       <header className="flex justify-between items-center px-2 shadow-md shadow-gray-700">
         {!collapse ? (
@@ -249,6 +249,10 @@ const Sidebar = ({ collapse }) => {
                     name: c.otherUser?.name,
                   }),
                 );
+                // ✅ CLOSE SIDEBAR ON MOBILE
+                if (window.innerWidth < 768) {
+                  setCollapse(true);
+                }
               }}
             >
               {/* open sidebar chat */}
@@ -262,11 +266,11 @@ const Sidebar = ({ collapse }) => {
 
                   <div className="w-full flex flex-col overflow-hidden min-w-0">
                     <div className="flex justify-between items-center text-white">
-                      <span className="text-base font-semibold">
+                      <span className="text-base font-semibold truncate max-w-[140px] md:max-w-[160px] lg:max-w-[180px]">
                         {c.otherUser?.name || "Unknown User"}
                       </span>
 
-                      <span className="text-[#9e9e9e] text-xs">
+                      <span className="text-[#9e9e9e] text-xs shrink-0 ml-2">
                         {new Date(c.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",

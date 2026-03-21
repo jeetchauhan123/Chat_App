@@ -8,6 +8,8 @@ const Auth = () => {
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [testerMode, setTesterMode] = useState(false);
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -20,13 +22,18 @@ const Auth = () => {
     if (user) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const EmailBtnClick = async () => {
+    if (emailLoading) return; // ✅ prevent multiple clicks
+
     if (!isValidEmail(email)) {
       alert("Please enter valid email");
       return;
     }
+
+    setEmailLoading(true); // ✅ start loading
+
     try {
       const response = await fetch(`${API}/api/users/generate-otp`, {
         method: "POST",
@@ -42,7 +49,7 @@ const Auth = () => {
       if (!response.ok) {
         throw new Error("Failed to generate OTP");
       }
-      const data = await response.json(); // ✅ NEW
+      const data = await response.json();
 
       // ✅ If tester mode → show OTP
       if (testerMode) {
@@ -58,14 +65,20 @@ const Auth = () => {
     } catch (error) {
       console.error(error);
       alert("Server error while generating OTP");
+    } finally {
+      setEmailLoading(false); // ✅ stop loading
     }
   };
 
   const OtpBtnClick = async () => {
+    if (otpLoading) return; // ✅ prevent spam
+
     if (otp.length !== 4) {
       alert("Enter 4 digit OTP");
       return;
     }
+
+    setOtpLoading(true);
 
     try {
       const response = await fetch(`${API}/api/users/verify-otp`, {
@@ -84,17 +97,19 @@ const Auth = () => {
         return;
       }
 
-      const data = await response.json(); // ✅ FIXED
+      const data = await response.json();
 
       console.log(data); // optional debug
 
-      localStorage.setItem("token", data.token); // ✅ FIXED
-      dispatch(setUser(data.user)); // ✅ FIXED
+      localStorage.setItem("token", data.token);
+      dispatch(setUser(data.user));
 
       navigate("/");
     } catch (error) {
       console.error(error);
       alert("Server error while verifying OTP");
+    } finally {
+      setOtpLoading(false);
     }
   };
 
@@ -103,12 +118,12 @@ const Auth = () => {
   };
 
   return (
-    <section className="w-screen h-screen p-6 bg-amber-50 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-20 lg:gap-28 xl:gap-44 relative">
+    <section className="w-full min-h-screen p-6 bg-amber-50 flex flex-col md:flex-row justify-center items-center gap-8 md:gap-20 lg:gap-28 xl:gap-44 relative">
       {/* <p className="absolute text-4xl top-5 left-6">ChatApp</p> */}
       <img
         src="/logo.png"
         alt="logo"
-        className="w-20 md:w-30 h-20 md:h-30 absolute text-4xl top-3 md:top-5 left-8 md:left-10"
+        className="w-20 md:w-28 h-20 md:h-28 absolute top-4 md:top-5 left-4 md:left-10"
       />
 
       {/* left section */}
@@ -151,7 +166,11 @@ const Auth = () => {
       <div className="w-[90%] sm:w-fit flex flex-col justify-center items-center gap-2 md:gap-4">
         {/* caption area */}
         <div className="bg-white w-full md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-5 md:py-6 lg:py-8 xl:py-10 flex justify-center items-center gap-2 rounded-3xl border">
-          <img src="/lock.svg" alt="" className="w-6 md:w-7 lg:w-8 h-6 md:h-7 lg:h-8" />
+          <img
+            src="/lock.svg"
+            alt=""
+            className="w-6 md:w-7 lg:w-8 h-6 md:h-7 lg:h-8"
+          />
           <p className="text-sm md:text-base lg:text-lg">
             Your messages are Safe and protected with us
           </p>
@@ -160,7 +179,13 @@ const Auth = () => {
         {/* main area */}
         {otpPage ? (
           // 2- otp page
-          <div className="bg-white w-90 md:w-110 lg:w-130 xl:w-150 px-7 py-10 flex flex-col items-center gap-5.5 md:gap-7 lg:gap-8.5 xl:gap-10 rounded-3xl border">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              OtpBtnClick();
+            }}
+            className="bg-white w-90 md:w-110 lg:w-130 xl:w-150 px-7 py-10 flex flex-col items-center gap-5.5 md:gap-7 lg:gap-8.5 xl:gap-10 rounded-3xl border"
+          >
             <p className="text-3xl">Enter OTP</p>
 
             <input
@@ -179,28 +204,39 @@ const Auth = () => {
                 Previous
               </button>
               <button
-                className="bg-amber-100 w-1/2 h-10 mb-2 rounded-full text-lg cursor-pointer"
+                type="submit"
+                disabled={otpLoading}
+                className={`bg-amber-100 w-1/2 h-10 rounded-full text-lg cursor-pointer ${otpLoading ? "opacity-50 cursor-not-allowed" : "active:scale-95 active:border-2 active:border-black"}`}
                 onClick={() => OtpBtnClick()}
               >
-                Submit
+                {otpLoading ? "Verifying..." : "Submit"}
               </button>
             </section>
-          </div>
+          </form>
         ) : (
           // 1- email page
-          <div className="bg-white w-full md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-4 sm:py-5 md:py-8 lg:py-9 xl:py-10 flex flex-col items-center gap-4
-           md:gap-6 lg:gap-8 xl:gap-10 rounded-3xl border">
+          <div className="bg-white w-full md:w-110 lg:w-130 xl:w-150 px-4 md:px-5 lg:px-6 xl:px-7 py-4 sm:py-5 md:py-8 lg:py-9 xl:py-10 flex flex-col items-center gap-4 md:gap-6 lg:gap-8 xl:gap-10 rounded-3xl border">
             <section className="flex flex-col items-center gap-1 md:gap-3">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">Welcome</h2>
-              <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl">Enter Your Email</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-normal">
+                Welcome
+              </h2>
+              <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl">
+                Enter Your Email
+              </p>
             </section>
-            <section className="w-full sm:w-2/3 flex flex-col items-center gap-3 md:gap-5">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                EmailBtnClick();
+              }}
+              className="w-full sm:w-2/3 flex flex-col items-center gap-3 md:gap-5"
+            >
               <input
                 type="email"
                 name="email"
                 id="email"
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-gray-100 w-40 md:w-50 lg:w-60 xl:w-70 h-8 lg:h-10 rounded-full text-center border"
+                className="bg-gray-100 w-full max-w-40 md:max-w-50 lg:max-w-60 xl:max-w-70 h-8 lg:h-10 rounded-full text-sm md:text-base text-center border"
               />
 
               {/* ✅ TESTER MODE TOGGLE */}
@@ -217,16 +253,18 @@ const Auth = () => {
               </div>
 
               <button
-                className="bg-amber-100 w-40 md:w-50 lg:w-60 xl:w-70 h-8 md:h-10 mb-2 rounded-full text-base md:text-lg cursor-pointer"
+                type="submit"
+                disabled={emailLoading}
+                className={`bg-amber-100 w-full max-w-40 md:max-w-50 lg:max-w-60 xl:max-w-70 h-8 md:h-10 rounded-full text-base md:text-lg cursor-pointer ${emailLoading ? "opacity-50 cursor-not-allowed" : "active:scale-95 active:border-2 active:border-black"}`}
                 onClick={() => EmailBtnClick()}
               >
-                Next
+                {emailLoading ? "Sending..." : "Next"}
               </button>
               <p className="text-[0.625rem] md:text-xs text-gray-400 text-center wrap-break-word">
                 Turn on Tester Mode to instantly access OTP without personal
                 email
               </p>
-            </section>
+            </form>
           </div>
         )}
 

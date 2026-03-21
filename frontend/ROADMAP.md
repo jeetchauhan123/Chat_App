@@ -269,9 +269,19 @@ This document tracks the architectural progression and feature maturity of the C
 - [x] Deploy to cloud (Frontend - Vercel / Backend - Render)
 
 
-BUGS - 
+##BUGS - 
 1. Loading screen when logs in auth -> chat page
 2. Automatically generate chat in sidebar when new chat is created 
 3. When a message new message comes highlight in sidebar
 4. New message is displayed in current open chat weather it came from the same person or any other person
 5. Personal chat and some other chat gets linked in display as they show same message no matter from where the message was sent
+6. On enter page submit in auth 
+7. border on button click to know button was clciked
+8. disable button to prevent multiple api call
+
+##Improvements - 
+1. Auth page responsiveness
+2. Side responsiveness
+3. Chat panel responsiveness
+4. Sending otp via mail
+ 
