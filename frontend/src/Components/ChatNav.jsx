@@ -49,7 +49,7 @@ const ChatNav = () => {
   };
 
   return (
-    <section className="h-[8%] w-full px-6 flex justify-between items-center bg-[#2a2a2a] rounded-t-2xl border-b border-[#3a3a3a]">
+    <section className="h-18 w-full px-6 flex justify-between items-center bg-[#2a2a2a] rounded-t-2xl border-b border-[#3a3a3a]">
       {/* LEFT: User Info */}
       <div className="flex items-center gap-4">
         {/* Avatar */}

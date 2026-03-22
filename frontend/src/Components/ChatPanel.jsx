@@ -32,7 +32,7 @@ const ChatPanel = () => {
       </div>
 
       {/* Optional: future overlay (typing / reconnecting etc) */}
-      <div className="absolute bottom-22 left-1/2 -translate-x-1/2 text-sm text-gray-400">
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 text-sm text-gray-400 z-30">
         Typing...
       </div>
     </div>

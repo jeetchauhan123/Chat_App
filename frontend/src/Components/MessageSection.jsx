@@ -213,7 +213,7 @@ return (
 
     {/* 🔥 SCROLL BUTTON */}
     {showScrollBtn && (
-      <div className="absolute bottom-24 right-6 z-20">
+      <div className="absolute bottom-24 right-6 z-40">
         <button
           onClick={() => {
             console.log("[Scroll] Manual scroll to bottom clicked");
@@ -222,7 +222,7 @@ return (
               behavior: "smooth"
             });
           }}
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-teal-600/90 backdrop-blur-md hover:bg-teal-500 text-sm font-medium shadow-xl shadow-teal-900/30 border border-white/10 transition-all duration-200 "
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-teal-600/90 backdrop-blur-md hover:bg-teal-500 text-sm font-medium shadow-xl shadow-teal-900/30 border border-white/10 transition-all duration-200"
         >
           ↓ New Messages
         </button>
