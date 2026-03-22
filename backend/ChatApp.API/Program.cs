@@ -33,12 +33,12 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins(
-                "https://chat-app-rho-two-74.vercel.app", 
+                "https://chat-app-rho-two-74.vercel.app",
                 "http://localhost:5173"
                 )
                   .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowAnyMethod();
+                  //.AllowCredentials();
 
         });
 });

@@ -11,7 +11,7 @@ const ChatPanel = () => {
       <div className="w-full h-full min-w-0 flex justify-center items-center relative bg-[#2a2a2a] rounded-3xl shadow-[0_0_50px_-20px] shadow-[#f5deb3c3] overflow-hidden">
         <video
           src="/message5.mp4"
-          className="w-120 h-120 rounded-3xl object-cover drop-shadow-[0_0_50px] drop-shadow-[#f5deb3c3]"
+          className="w-70 sm:w-100 md:w-120 h-70 sm:h-100 md:h-120 rounded-3xl object-cover drop-shadow-[0_0_50px] drop-shadow-[#f5deb3c3]"
           autoPlay
           loop
           muted
