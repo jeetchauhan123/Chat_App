@@ -271,7 +271,7 @@ const Sidebar = ({ collapse }) => {
                       </span>
 
                       <span className="text-[#9e9e9e] text-xs shrink-0 ml-2">
-                        {new Date(c.createdAt).toLocaleTimeString([], {
+                        {new Date(c.lastMessageTime || c.createdAt).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}

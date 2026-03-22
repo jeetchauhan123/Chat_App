@@ -83,6 +83,10 @@ namespace ChatApp.API.Controllers
                     c.ConversationType,
                     c.CreatedAt,
                     LastMessage = c.LastMessage != null ? c.LastMessage.Content : null,
+                    LastMessageTime = c.LastMessage != null
+                        ? c.LastMessage.CreatedAt
+                        : (DateTime?)null,   // 👈 IMPORTANT (nullable)
+
                     OtherUser = c.ConversationMembers
                         .Where(m => m.UserId != userId)
                         .Select(m => new

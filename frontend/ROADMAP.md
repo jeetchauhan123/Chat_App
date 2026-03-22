@@ -269,19 +269,36 @@ This document tracks the architectural progression and feature maturity of the C
 - [x] Deploy to cloud (Frontend - Vercel / Backend - Render)
 
 
+
 ##BUGS - 
 1. Loading screen when logs in auth -> chat page
 2. Automatically generate chat in sidebar when new chat is created 
-3. When a message new message comes highlight in sidebar
-4. New message is displayed in current open chat weather it came from the same person or any other person
-5. Personal chat and some other chat gets linked in display as they show same message no matter from where the message was sent
-6. On enter page submit in auth 
-7. border on button click to know button was clciked
-8. disable button to prevent multiple api call
+3. New message is displayed in current open chat weather it came from the same person or any other person
+4. Personal chat and some other chat gets linked in display as they show same message no matter from where the message was sent
+5. ✔ On enter page submit in auth 
+6. ✔ border on button click to know button was clciked
+7. ✔ disable button to prevent multiple api call
+8. Chat input section in mobile view after selecting a file the input box gets out of the screen
+9. ✔ Time in side bar and time of the actual message in chat is different (sidebar displays time of the very first message of chat)
+10. Lagging site
+11. ✔ Resolve Browser asking for other App and service permission
+12. ✔ On enter click in auth otp section it directs to previous rather than submitting
+
 
 ##Improvements - 
-1. Auth page responsiveness
-2. Side responsiveness
+1. ✔ Auth page responsiveness
+2. Side Bar responsiveness
 3. Chat panel responsiveness
 4. Sending otp via mail
- 
+5. Highlight active chat
+6. When a message new message comes highlight in sidebar
+7. Weather the person is online or not
+8. Typing
+9. If the message is seen or not
+10. How to handle Message coming from unknow from user
+11. Profile page
+12. Mute Chat
+13. Delete Chat
+14. Block Chat
+15. Profile of Other Users
+16. Encryption of chat message

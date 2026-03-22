@@ -193,11 +193,13 @@ const Auth = () => {
               value={otp}
               name="otp"
               id="otp"
+              autoFocus
               onChange={(e) => setOtp(e.target.value)}
               className="bg-gray-100 w-70 h-10 rounded-full text-center border"
             />
             <section className="w-70 flex gap-4">
               <button
+                type="button"
                 className="bg-amber-100 w-1/2 h-10 rounded-full text-lg"
                 onClick={() => setOtpPage(false)}
               >
