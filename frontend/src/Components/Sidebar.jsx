@@ -246,7 +246,7 @@ const Sidebar = ({ collapse }) => {
                 dispatch(
                   setSelectedUser({
                     userId: c.otherUser?.userId,
-                    name: c.otherUser?.name,
+                    name: c.otherUser?.name || "User",
                   }),
                 );
                 // ✅ CLOSE SIDEBAR ON MOBILE

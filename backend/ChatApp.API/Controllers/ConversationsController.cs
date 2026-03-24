@@ -134,25 +134,57 @@ namespace ChatApp.API.Controllers
                 .Select(cm => cm.UserId)
                 .FirstOrDefaultAsync();
 
-            // 🔥 SEND REAL-TIME MESSAGE
-            await _hubContext.Clients.User(receiverId.ToString())
-                .SendAsync("ReceiveMessage", new
-                {
-                    message.MessageId,
-                    message.ConversationId,
-                    message.SenderId,
-                    message.Content,
-                    message.CreatedAt
-                });
+            // 🔥 GET USERS (IMPORTANT FOR SIDEBAR)
+            var senderUser = await _context.Users
+                .Where(u => u.UserId == request.SenderId)
+                .Select(u => new { u.UserId, u.Name })
+                .FirstOrDefaultAsync();
 
-            return Ok(new
+            var receiverUser = await _context.Users
+                .Where(u => u.UserId == receiverId)
+                .Select(u => new { u.UserId, u.Name })
+                .FirstOrDefaultAsync();
+
+            var messagePayload = new
             {
                 message.MessageId,
                 message.ConversationId,
                 message.SenderId,
                 message.Content,
-                message.CreatedAt
-            });
+                message.CreatedAt,
+                clientTempId = request.ClientTempId 
+            };
+
+            // 🔥 SEND MESSAGE (BOTH USERS)
+            await _hubContext.Clients.User(receiverId.ToString())
+                .SendAsync("ReceiveMessage", messagePayload);
+
+            await _hubContext.Clients.User(request.SenderId.ToString())
+                .SendAsync("ReceiveMessage", messagePayload);
+
+            // 🔥 SEND SIDEBAR UPDATE (WITH FULL DATA)
+
+            // receiver sees sender
+            await _hubContext.Clients.User(receiverId.ToString())
+                .SendAsync("UpdateSidebar", new
+                {
+                    conversationId,
+                    lastMessage = message.Content,
+                    lastMessageTime = message.CreatedAt,
+                    otherUser = senderUser
+                });
+
+            // sender sees receiver
+            await _hubContext.Clients.User(request.SenderId.ToString())
+                .SendAsync("UpdateSidebar", new
+                {
+                    conversationId,
+                    lastMessage = message.Content,
+                    lastMessageTime = message.CreatedAt,
+                    otherUser = receiverUser
+                });
+
+            return Ok(messagePayload);
         }
     }
 
@@ -168,5 +200,6 @@ namespace ChatApp.API.Controllers
     {
         public int SenderId { get; set; }
         public string Content { get; set; }
+        public long ClientTempId { get; set; } 
     }
 }

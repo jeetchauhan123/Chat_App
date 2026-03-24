@@ -72,7 +72,10 @@ namespace ChatApp.API.Controllers
         public async Task<IActionResult> GetUserConversations(int userId)
         {
             var conversations = await _context.Conversations
-                .Where(c => c.ConversationMembers.Any(m => m.UserId == userId))
+                .Where(c =>
+                    c.ConversationMembers.Any(m => m.UserId == userId)
+                    && c.LastMessage != null   // 🔥🔥🔥 MAIN FIX
+                )
                 .Include(c => c.ConversationMembers)
                     .ThenInclude(cm => cm.User)
                 .Include(c => c.LastMessage)

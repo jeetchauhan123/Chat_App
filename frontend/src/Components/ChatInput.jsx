@@ -18,16 +18,33 @@ const ChatInput = () => {
   const sendMessage = async () => {
     if (!text.trim()) return;
 
+    const tempId = Date.now(); // 🔥 TEMP ID
+
+    const tempMessage = {
+      tempId,
+      conversationId: selectedConversationId,
+      senderId: user.userId,
+      content: text,
+      createdAt: new Date().toISOString(),
+      status: "sending",
+    };
+
+    // ✅ 1. INSTANT UI UPDATE
+    dispatch(addMessage(tempMessage));
+
+    setText(""); // clear input immediately
+
     try {
       const token = localStorage.getItem("token");
 
       console.log("[ChatInput] Sending message:", text);
 
-      const res = await axios.post(
+      await axios.post(
         `${API}/api/conversations/${selectedConversationId}/send`,
         {
           senderId: user.userId,
-          content: text,
+          content: tempMessage.content,
+          clientTempId: tempId,
         },
         {
           headers: {
@@ -37,11 +54,16 @@ const ChatInput = () => {
       );
 
       console.log("[ChatInput] Message sent successfully");
-
-      dispatch(addMessage(res.data));
-      setText("");
     } catch (err) {
       console.error("[ChatInput] Send error:", err);
+      
+      // ❌ mark message as failed
+      dispatch(
+        addMessage({
+          tempId,
+          status: "failed",
+        }),
+      );
     }
   };
 
@@ -107,7 +129,7 @@ const ChatInput = () => {
   //       {/* 🔥 SEND BUTTON */}
   //       <button
   //         onClick={sendMessage}
-  //         className={`h-10 w-10 flex items-center justify-center rounded-full bg-[#056162] hover:bg-[#0a7a7c] active:bg-[#0d8f91] transition-all shadow-md 
+  //         className={`h-10 w-10 flex items-center justify-center rounded-full bg-[#056162] hover:bg-[#0a7a7c] active:bg-[#0d8f91] transition-all shadow-md
   //         ${text.trim() ? "opacity-100 scale-100" : "opacity-50 scale-95"}
   //       `}
   //         disabled={!text.trim()}
@@ -125,7 +147,6 @@ const ChatInput = () => {
   // );
   return (
     <div className="w-full px-4 py-3 bg-[#1f2933] border-t border-white/10 flex flex-col">
-      
       {/* 🟢 NEW: File Preview Shelf (Now sits ABOVE the input) */}
       {file && (
         <div className="w-fit flex items-center justify-between mb-2 px-3 py-2 bg-[#2b3642] border border-white/10 rounded-lg animate-in fade-in slide-in-from-bottom-2">
@@ -144,7 +165,6 @@ const ChatInput = () => {
 
       {/* 🔥 INPUT BAR (Stays consistent width) */}
       <div className="flex items-center gap-2 bg-[#2b3642] rounded-full px-2 py-1 shadow-inner border border-white/10 focus-within:ring-2 focus-within:ring-teal-500/40 transition">
-
         {/* LEFT ACTION (ATTACHMENT) */}
         <button
           onClick={handleAttachClick}

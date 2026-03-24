@@ -272,18 +272,20 @@ This document tracks the architectural progression and feature maturity of the C
 
 ##BUGS - 
 1. Loading screen when logs in auth -> chat page
-2. Automatically generate chat in sidebar when new chat is created 
+2. ✔ Automatically generate chat in sidebar when new chat is created 
 3. New message is displayed in current open chat weather it came from the same person or any other person
 4. Personal chat and some other chat gets linked in display as they show same message no matter from where the message was sent
 5. ✔ On enter page submit in auth 
 6. ✔ border on button click to know button was clciked
 7. ✔ disable button to prevent multiple api call
-8. Chat input section in mobile view after selecting a file the input box gets out of the screen
+8. ✔ Chat input section in mobile view after selecting a file the input box gets out of the screen
 9. ✔ Time in side bar and time of the actual message in chat is different (sidebar displays time of the very first message of chat)
 10. Lagging site
 11. ✔ Resolve Browser asking for other App and service permission
 12. ✔ On enter click in auth otp section it directs to previous rather than submitting
-
+13. When 2 People login at the same time then only 1 user will get his data the other wont get no matter how many times he reloads(but he will be logged into the system)
+14. when logging out and logging in the chat of the previous user chat is already open 
+15. ✔ Showing 2 message on the sender side after sending the message, after reload only shows one
 
 ##Improvements - 
 1. ✔ Auth page responsiveness
