@@ -7,6 +7,7 @@ import {
   setConversations,
   setSelectedUser,
   setSelectedConversationId,
+  clearUnread,
 } from "../store/chatSlice";
 import { getConnection } from "../signalr";
 
@@ -25,6 +26,11 @@ const Sidebar = ({ collapse }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const unreadMap = useSelector((state) => state.chat.unreadMap);
+  const selectedConversationId = useSelector(
+    (state) => state.chat.selectedConversationId,
+  );
 
   /*handle off click menu close*/
   useEffect(() => {
@@ -236,7 +242,13 @@ const Sidebar = ({ collapse }) => {
           conversations.map((c) => (
             <section
               key={c.conversationId}
-              className="w-full flex flex-col items-center"
+              className={`w-full flex flex-col items-center ${
+                selectedConversationId === c.conversationId
+                  ? "bg-[#3a2f2f]" // 🎯 ACTIVE CHAT
+                  : unreadMap[c.conversationId]
+                    ? "bg-[#2a1f1f] animate-pulse" // 🔥 NEW MESSAGE
+                    : ""
+              }`}
               onClick={() => {
                 console.log(
                   "[Sidebar] Conversation selected:",
@@ -249,7 +261,10 @@ const Sidebar = ({ collapse }) => {
                     name: c.otherUser?.name || "User",
                   }),
                 );
-                // ✅ CLOSE SIDEBAR ON MOBILE
+
+                dispatch(clearUnread(c.conversationId));
+
+                // CLOSE SIDEBAR ON MOBILE
                 if (window.innerWidth < 768) {
                   setCollapse(true);
                 }
@@ -271,11 +286,18 @@ const Sidebar = ({ collapse }) => {
                       </span>
 
                       <span className="text-[#9e9e9e] text-xs shrink-0 ml-2">
-                        {new Date(c.lastMessageTime || c.createdAt).toLocaleTimeString([], {
+                        {new Date(
+                          c.lastMessageTime || c.createdAt,
+                        ).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}
                       </span>
+                      {unreadMap[c.conversationId] > 0 && (
+                        <span className="ml-2 bg-amber-600 text-white text-xs px-2 py-0.5 rounded-full">
+                          {unreadMap[c.conversationId]}
+                        </span>
+                      )}
                     </div>
 
                     <p className="text-[#9e9e9e] text-sm truncate">

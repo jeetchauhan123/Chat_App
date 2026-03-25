@@ -286,14 +286,19 @@ This document tracks the architectural progression and feature maturity of the C
 13. When 2 People login at the same time then only 1 user will get his data the other wont get no matter how many times he reloads(but he will be logged into the system)
 14. when logging out and logging in the chat of the previous user chat is already open 
 15. ✔ Showing 2 message on the sender side after sending the message, after reload only shows one
+16. ✔ Real time message transfer is working only in chat panel - sidebar also needs to be changed
+
+##Suspects
+*1. After i manually deleted some messages in pg admin, whole conversation was not being displayed in the sidebar, can happen in deleting message
+*2. Sometimes chat chat is displayed from the starting message
 
 ##Improvements - 
 1. ✔ Auth page responsiveness
 2. Side Bar responsiveness
 3. Chat panel responsiveness
 4. Sending otp via mail
-5. Highlight active chat
-6. When a message new message comes highlight in sidebar
+5. ✔ Highlight active chat
+6. ✔ When a message new message comes highlight in sidebar
 7. Weather the person is online or not
 8. Typing
 9. If the message is seen or not
@@ -304,3 +309,6 @@ This document tracks the architectural progression and feature maturity of the C
 14. Block Chat
 15. Profile of Other Users
 16. Encryption of chat message
+17. Delete Message
+18. Pagination
+19. Highlighting the new message in chat panel or displaying new messages text for new messages

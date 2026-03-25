@@ -7,6 +7,7 @@ const chatSlice = createSlice({
     selectedUser: null,
     selectedConversationId: null,
     messages: [],
+    unreadMap: {},
   },
   reducers: {
     setConversations: (state, action) => {
@@ -50,6 +51,9 @@ const chatSlice = createSlice({
         (c) => c.conversationId === conversationId,
       );
 
+      // 🔥 CHECK if this chat is currently open
+      const isActive = state.selectedConversationId === conversationId;
+
       if (convo) {
         convo.lastMessage = lastMessage;
         convo.lastMessageTime = lastMessageTime;
@@ -68,6 +72,12 @@ const chatSlice = createSlice({
         });
       }
 
+      // 🔥 HANDLE UNREAD COUNT
+      if (!isActive) {
+        state.unreadMap[conversationId] =
+          (state.unreadMap[conversationId] || 0) + 1;
+      }
+
       // ✅ SORT
       state.conversations.sort(
         (a, b) =>
@@ -78,6 +88,10 @@ const chatSlice = createSlice({
     replaceTempMessage: (state, action) => {
       const { index, message } = action.payload;
       state.messages[index] = message;
+    },
+    clearUnread: (state, action) => {
+      const conversationId = action.payload;
+      state.unreadMap[conversationId] = 0;
     },
   },
 });
@@ -90,6 +104,7 @@ export const {
   addMessage,
   updateSidebarFromSocket,
   replaceTempMessage,
+  clearUnread,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
